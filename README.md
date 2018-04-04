@@ -1,0 +1,2 @@
+### lstring
+* line string.
