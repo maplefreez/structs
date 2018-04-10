@@ -6,12 +6,14 @@ plstring str_assume (const char* _str) {
 	plstring ret;
 	size_t len;
 
-	if (! _str || ! *_str) return NULL;
+	if (! _str /* || ! *_str*/) return NULL;
 
 	len = strlen (_str);
 	ret = (plstring) malloc (sizeof (lstring));
 
 	if (! ret) return NULL;
+
+	/* For each structure field. */
 	if (0 >= len) {
 		ret -> chunk = NULL;
 		ret -> length = 0;
@@ -136,15 +138,5 @@ void str_destroy (plstring _str) {
 		free (_str);
 	}
 }
-
-
-/* Test */
-int main (int argc, char* argv []) {
-	char* x = "hello";
-	plstring string = str_assume (x);
-	str_destroy (string);
-	return 0;
-}
-
 
 

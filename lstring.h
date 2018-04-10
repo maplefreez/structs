@@ -23,8 +23,10 @@ typedef struct _lstring {
  * $1  The C string.
  *
  * Return a new entity of lstring structure while
- * successful. When $1 is an empty string or syscall
+ * successful. When $1 is NULL, or syscall
  * malloc fails unexpectedly, NULL will be returned.
+ * If $1 is an empty string (''), a new lstring entity
+ * with NULL assumed for charactor chunk will be returned.
  */
 extern plstring str_assume (const char*);
 
