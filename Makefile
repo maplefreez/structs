@@ -1,11 +1,16 @@
 CC=gcc
 CFLAGS=-g
+TESTS=t_lstring
+OBJS=lstring.o
 
-all: lstring
+all: $(OBJS) $(TESTS)
 
-lstring: lstring.c lstring.h
+t_lstring:	t_lstring.c lstring.o
+	$(CC) -o $@ $^ $(CFLAGS)
+
+lstring.o: lstring.c lstring.h
 	$(CC) -c $< $(CFLAGS)
 
 clean:
-	rm -f lstring.o
+	rm -f $(TESTS) $(OBJS)
 
