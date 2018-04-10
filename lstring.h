@@ -3,7 +3,6 @@
 
 #include "common.h"
 
-// #	define _MIN_CHUNK  8
 
 /*
  * A minimum set of line string definiation.
@@ -32,11 +31,47 @@ extern plstring str_assume (const char*);
 
 
 /*
- * Return the length of string chunk.
+ * Return the length of string chunk. We've substracted 
+ * the terminal byte ('\0',1 byte).
+ *
+ * $1  The lstring ptr.
+ *
+ * If $1 is NULL, return -1 (Maybe it 
+ * should rationally be 0).
  */
 extern int str_length (plstring);
 extern int str_cmp (const plstring, const plstring);
+
+/*
+ * Clear the data chunk. This function calls free() for
+ * data chunk field, setting it to NULL.
+ *
+ * $1  The lstring ptr.
+ *
+ * Note: Actually I personally guess the function useless. 
+ * We'd rather invoke str_destroy(). I shell change the 
+ * function so that it but clean up the data chunk without 
+ * freeing it's occupation.
+ */
 extern rtn_status str_clear (plstring);
+
+/*
+ * Slice the string, then return the substring ranges
+ * from position $2 to ($2 + $3 - 1). $1 is the 
+ * substring length, including bytes at index $2.
+ *
+ * $1  An input string to be sliced.
+ * $2  The beginning location of substring.
+ * $3  The total length of substring.
+ *
+ * Note: Return NULL if $1 is NULL or an empty string.
+ * $2 ranges [0, strlen ($1) - 1], or NULL will be returned.
+ * $3 ranges [1, +INF], or NULL will be returned. 
+ *
+ * If $3 is greater than the remaining data length, we 
+ * directly return the remaining data.
+ * The length $3 including one byte indexed at $2.
+ */
 extern plstring str_substring (plstring, int, int);
 extern plstring str_concat (const plstring, const plstring);
 

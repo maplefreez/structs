@@ -18,10 +18,14 @@ plstring str_assume (const char* _str) {
 		ret -> chunk = NULL;
 		ret -> length = 0;
 	} else {
-		ret -> chunk = (char*) malloc (len * sizeof (char));
+		/* We use an extra byte for terminal byte('\0') so
+		 * that lstring can be used against C string. */
+		ret -> chunk = (char*) malloc ((len + 1) * sizeof (char));
 		if (! ret -> chunk) goto err; 
 		
 		strncpy (ret -> chunk, _str, len);
+		/* Set the terminal byte. */
+		ret -> chunk [len] = '\0';
 		ret -> length = len;
 	}
 
@@ -42,7 +46,7 @@ int str_length (plstring _str) {
 	if (_str)
 		return _str -> length;
 
-	return STAT_ERR;
+	return -1;
 }
 
 
@@ -69,8 +73,9 @@ rtn_status str_clear (plstring _str) {
 	
 	if (_str -> chunk)
 		free (_str -> chunk);
-	_str -> length = 0;
 
+	_str -> length = 0;
+	_str -> chunk = NULL;
 	return STAT_SUCC;
 }
 
@@ -81,17 +86,28 @@ plstring str_substring (plstring _str, int _pos, int _len) {
 	if (! _str) return NULL;
 
 	len = _str -> length;
-	remain = len - _pos + 1;
+	/* Remaining byte length = len - (pos + 1) + 1,
+	 * We added a one at the end for one byte located 
+	 * at [pos]. */
+	remain = len - _pos;
+
+	/* The range of _pos: [0, len - 1]
+	 * The range of _len: [1, +INF] */
 	if (_pos < 0 || _pos >= len || _len <= 0) 
 		return NULL;
 
 	ret = (plstring) malloc (sizeof (lstring));
 	if (ret) {
-		int actual_len = remain > len ? len : remain;
-		ret -> chunk = (char*) malloc (actual_len * sizeof (char));
+		int actual_len = remain > _len ? _len : remain;
+		/* Note one terminal byte. */
+		ret -> chunk = (char*) malloc (
+				(actual_len + 1) * sizeof (char));
 
 		if (! ret -> chunk) return NULL;
+		/* Copy data. */
 		strncpy (ret -> chunk, _str -> chunk + _pos, actual_len);
+		ret -> chunk [actual_len] = '\0';
+		ret -> length = actual_len;
 	}
 
 	return ret;
