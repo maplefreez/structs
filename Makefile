@@ -5,6 +5,8 @@ OBJS=lstring.o
 
 all: $(OBJS) $(TESTS)
 
+test:	$(TESTS)
+
 t_lstring:	t_lstring.c lstring.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
