@@ -1,3 +1,9 @@
+/*
+ * Test suits for lstring.
+ * Author : ez
+ * Date : 2018/4/6
+ */
+
 #include "lstring.h"
 #include <stdlib.h>
 #include <assert.h>
@@ -16,6 +22,11 @@ static void t_str_clear1 ();
 static void t_str_substring1 ();
 static void t_str_substring2 ();
 
+static void t_str_cmp1 ();
+static void t_str_cmp2 ();
+
+static void t_str_concat ();
+
 /* Main test entry. */
 int main (int argc, char* argv []) {
 	t_str_destroy ();
@@ -26,8 +37,13 @@ int main (int argc, char* argv []) {
 	t_str_length2 ();
 
 	t_str_clear1 ();
+
 	t_str_substring1 ();
 	t_str_substring2 ();
+
+	t_str_cmp1 ();
+	t_str_cmp2 ();
+	t_str_concat ();
 	return 0;
 }
 
@@ -153,4 +169,117 @@ static void t_str_substring2 () {
 	assert (res == NULL);
 }
 
+static void t_str_cmp1 () {
+	int cmpres = 0x7F;
+	/* 0x1 */
+	plstring lopd = str_assume ("");
+	plstring ropd = str_assume ("");
+
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	assert (cmpres == 0);
+	str_destroy (lopd);
+	str_destroy (ropd);
+
+	/* 0x2 */
+	lopd = str_assume ("323");
+	ropd = str_assume ("324");
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	assert (cmpres == 1);
+	str_destroy (lopd);
+	str_destroy (ropd);
+
+	/* 0x3 */
+	lopd = str_assume ("3234");
+	ropd = str_assume ("324");
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	assert (cmpres == -1);
+	str_destroy (lopd);
+	str_destroy (ropd);
+
+	/* 0x4 */
+	lopd = str_assume ("");
+	ropd = str_assume ("324");
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	assert (cmpres == 3);
+	str_destroy (lopd);
+	str_destroy (ropd);
+
+	/* 0x5 */
+	lopd = str_assume ("343");
+	ropd = str_assume ("");
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	assert (cmpres == -3);
+	str_destroy (lopd);
+	str_destroy (ropd);
+
+}
+
+static void t_str_cmp2 () {
+	int cmpres = 0x7F;
+	/* 0x1 */
+	plstring lopd = str_assume ("43789893");
+	plstring ropd = str_assume ("43238,0843r3");
+
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	/* length diffence */
+	assert (cmpres == (12-8));
+	str_destroy (lopd);
+	str_destroy (ropd);
+
+	/* 0x2 */
+	lopd = str_assume ("43789893");
+	ropd = str_assume ("43238,08");
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	/* ASCII code diffence */
+	assert (cmpres == ('2'-'7'));
+	str_destroy (lopd);
+	str_destroy (ropd);
+
+	/* 0x3 */
+	lopd = str_assume ("3437483194831");
+	ropd = str_assume ("3437483194831");
+	assert (lopd != NULL && ropd != NULL);
+	cmpres = str_cmp (lopd, ropd);
+	assert (cmpres == 0);
+	str_destroy (lopd);
+	str_destroy (ropd);
+}
+
+static void t_str_concat () {
+	char* res2 = "arriveed", *p;
+	int i = 0;
+	plstring aopd = str_assume ("");
+	plstring bopd = str_assume ("");
+	plstring res = NULL;
+
+	/* 0x1 */
+	assert (aopd != NULL && bopd != NULL);
+	res = str_concat (aopd, bopd);
+	assert (res != NULL && res -> length == 0 &&
+			res -> chunk == NULL);
+	str_destroy (aopd);
+	str_destroy (bopd);
+	str_destroy (res);
+
+	/* 0x2 */
+	aopd = str_assume ("arrive");
+	bopd = str_assume ("ed");
+	assert (aopd != NULL && bopd != NULL);
+	res = str_concat (aopd, bopd);
+	assert (res != NULL && res -> length == 8 &&
+			res -> chunk != NULL);
+	for (p = res2, i = 0; *p; ++ p, ++ i)
+		assert (res -> chunk [i] == *p);
+	str_destroy (aopd);
+	str_destroy (bopd);
+	str_destroy (res);
+
+}
 

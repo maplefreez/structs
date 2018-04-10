@@ -52,16 +52,19 @@ int str_length (plstring _str) {
 
 int str_cmp (const plstring _s1, const plstring _s2) {
 	int len1, len2, i;
-	if (! _s1 || ! _s2) return STAT_ERR;
+	/* Never mind invalid input ;-) */
+	// if (! _s1 || ! _s2) return STAT_ERR;
 
 	len1 = _s1 -> length;
 	len2 = _s2 -> length;
 
 	if (len1 == len2) {
 		for (; i < len1; ++ i)
+			/* Inequality */
 			if (_s1 -> chunk [i] != _s2 -> chunk [i])
-				return _s2 -> chunk [i] - _s1 -> chunk [i];
-		return CMP_EQ;
+				return _s2 -> chunk [i] - _s1 -> chunk [i]; 
+		/* Equality */
+		return 0;
 	}
 
 	return len2 - len1;
@@ -135,11 +138,17 @@ plstring str_concat (const plstring _s1, const plstring _s2) {
 		ret -> length = 0;
 		ret -> chunk = NULL;
 	} else {
-		ret -> chunk = (char*) malloc (total_len * sizeof (char));
+		/* An extra byte for terminal charactor. */
+		ret -> chunk = (char*) malloc (
+				(total_len + 1) * sizeof (char));
 		if (! ret -> chunk) { free (ret); return NULL; }
 
-		strncpy (ret -> chunk, _s1 -> chunk, len1);
-		strncpy (ret -> chunk + len1, _s2 -> chunk, len2);
+		/* Copy memory. */
+		if (len1)
+			strncpy (ret -> chunk, _s1 -> chunk, len1);
+		if (len2)
+			strncpy (ret -> chunk + len1, _s2 -> chunk, len2);
+		ret -> chunk [total_len] = '\0';
 		ret -> length = total_len;
 	}
 
