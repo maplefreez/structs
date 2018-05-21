@@ -83,6 +83,59 @@ void bt_inordertraversal (pbtree _t, bt_visitf _func) {
 	_bt_inordertraversal (_t, _func);
 }
 
+
+/* Create a new tree by its preorder and inorder
+ * traversal sequency. If one of $1 and $2 is NULL,
+ * function return NULL, and occurring error as well.
+ * $1  The preorder secuency.
+ * $2  The inorder sequency.
+ *
+ * Return the new tree pointer while successful. */
+// TODO Testing !!! 
+pbtree _bt_create_pre_inorder (char* _preo, char* _ino) {
+	size_t inend;
+	if (! _preo || ! _ino) return NULL;
+
+	inend = strlen (_ino);
+	return _bt_create_pre_inorder (&_preo, _ino, _ino + inend - 1);
+}
+
+pbtree _bt_create_pre_inorder (
+		char** _preo, 
+		char* _inosta, 
+		char* _inend) {
+	pbtree root = NULL;
+	char* pre_ch = NULL;
+	pre_ch = *_preo;
+
+	/* The root to be returned. */
+	root = bt_create_node (pre_ch);
+
+	if (root) {
+		char* left_end = strchr (_inosta, pre_ch);
+		char* right_sta = left_end + 1;
+		int left_len = left_end - _inosta;
+		int right_len = _inend - left_end;
+
+		preo ++;
+
+		if (left_len) {
+			/* Start left child tree. */
+			left_end --;
+			root -> left = _bt_create_pre_inorder_left (&preo, _inosta, 
+					left_end);
+		}
+
+		if (right_len)
+			/* Start right child tree. */
+			root -> right = _bt_create_pre_inorder_right (&preo, right_sta,
+					right_sta + right_len - 1);
+	}
+
+	return root;
+}
+
+
 static void _bt_inordertraversal (pbtree _t, bt_visitf _func) {
 	if (_t != NULL) {
 		_bt_inordertraversal (_t -> left, _func);

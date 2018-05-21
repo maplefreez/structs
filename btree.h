@@ -50,6 +50,16 @@ typedef void (*bt_visitf) (pbtnode);
 extern pbtree bt_create (void**, int);
 
 
+/* Create a new tree by its preorder and inorder
+ * traversal sequency. If one of $1 and $2 is NULL,
+ * function return NULL, and occurring error as well.
+ * $1  The preorder secuency.
+ * $2  The inorder sequency.
+ *
+ * Return the new tree pointer while successful. */
+extern pbtree bt_create_pre_inorder (char*, char*);
+
+
 /* Create a new tree node by inputing data.
  * $1  The data pointer. 
  * 
