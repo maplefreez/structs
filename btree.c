@@ -1,6 +1,7 @@
 #include "btree.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 static void _default_visit_func (pbtnode);
@@ -8,6 +9,7 @@ static void _bt_pretraversal (pbtree, bt_visitf);
 static void _bt_posttraversal (pbtree, bt_visitf);
 static void _bt_inordertraversal (pbtree, bt_visitf);
 
+static pbtree _bt_create_pre_inorder (char**, char*, char*);
 
 /* Create a new tree by inputing data list
  * and it's length. The list shell be supposed
@@ -18,17 +20,11 @@ static void _bt_inordertraversal (pbtree, bt_visitf);
  * Return the new tree pointer while successful. 
  * Or NULL if $1 is NULL, empty or another unexpected
  * error (e.g. out of memory). */
-pbtree bt_create (void** _data, int _len) {
+// pbtree bt_create (void** _data, int _len) {
 	// TODO...
-}
+// }
 
 
-/* Create a new tree node by inputing data.
- * $1  The data pointer. 
- * 
- * Return a new tree node while successful. 
- * Or NULL if $1 is NULL or another unexpected
- * error (e.g. out of memory). */
 pbtnode bt_create_node (void* _data) {
 	pbtree ret = NULL;
 	if (_data) {
@@ -42,9 +38,6 @@ pbtnode bt_create_node (void* _data) {
 	return ret;
 }
 
-/* Preordering traverse each node of a tree by invoke 
- * the input function pointer $2. A default implementation 
- * will be used when caller gets a NULL function. */
 void bt_pretraversal (pbtree _t, bt_visitf _func) {
 	/* Use our default traversal implementation. */
 	if (! _func) _func = _default_visit_func;
@@ -59,9 +52,6 @@ static void _bt_pretraversal (pbtree _t, bt_visitf _func) {
 	}
 }
 
-/* Postordering traverse each node of a tree by invoke 
- * the input function pointer $2. A default implementation 
- * will be used when caller gets a NULL function. */
 void bt_posttraversal (pbtree _t, bt_visitf _func) {
 	if (! _func) _func = _default_visit_func;
 	_bt_posttraversal (_t, _func);
@@ -75,24 +65,24 @@ static void _bt_posttraversal (pbtree _t, bt_visitf _func) {
 	}
 }
 
-/* Inordering traverse each node of a tree by invoke 
- * the input function pointer $2. A default implementation 
- * will be used when caller gets a NULL function. */
 void bt_inordertraversal (pbtree _t, bt_visitf _func) {
 	if (! _func) _func = _default_visit_func;
 	_bt_inordertraversal (_t, _func);
 }
 
+void bt_release (pbtree _t, bt_freef _func) {
+	if (_t) {
+		bt_release (_t -> left, _func);
+		bt_release (_t -> right, _func);
+		/* Release data field. */
+		if (_func) _func (_t);
+		/* Release node memory. */
+		free (_t);
+	}
+}
 
-/* Create a new tree by its preorder and inorder
- * traversal sequency. If one of $1 and $2 is NULL,
- * function return NULL, and occurring error as well.
- * $1  The preorder secuency.
- * $2  The inorder sequency.
- *
- * Return the new tree pointer while successful. */
-// TODO Testing !!! 
-pbtree _bt_create_pre_inorder (char* _preo, char* _ino) {
+
+pbtree bt_create_pre_inorder (char* _preo, char* _ino) {
 	size_t inend;
 	if (! _preo || ! _ino) return NULL;
 
@@ -105,11 +95,12 @@ pbtree _bt_create_pre_inorder (
 		char* _inosta, 
 		char* _inend) {
 	pbtree root = NULL;
-	char* pre_ch = NULL;
-	pre_ch = *_preo;
+	char pre_ch = 0x00;
 
+	/* Data field */
+	pre_ch = **_preo;
 	/* The root to be returned. */
-	root = bt_create_node (pre_ch);
+	root = bt_create_node ((void*) pre_ch);
 
 	if (root) {
 		char* left_end = strchr (_inosta, pre_ch);
@@ -117,24 +108,40 @@ pbtree _bt_create_pre_inorder (
 		int left_len = left_end - _inosta;
 		int right_len = _inend - left_end;
 
-		preo ++;
+		(*_preo) ++;
 
 		if (left_len) {
 			/* Start left child tree. */
 			left_end --;
-			root -> left = _bt_create_pre_inorder_left (&preo, _inosta, 
+			root -> left = _bt_create_pre_inorder (_preo, _inosta, 
 					left_end);
 		}
 
 		if (right_len)
 			/* Start right child tree. */
-			root -> right = _bt_create_pre_inorder_right (&preo, right_sta,
+			root -> right = _bt_create_pre_inorder (_preo, right_sta,
 					right_sta + right_len - 1);
 	}
 
 	return root;
 }
 
+
+pbtree bt_create_post_inorder (char* _posto, char* _ino) {
+	size_t inend;
+	if (! _posto || ! _ino) return NULL;
+
+	inend = strlen (_ino);
+	return _bt_create_post_inorder (&_posto, _ino, _ino + inend - 1);
+}
+
+pbtree _bt_create_post_inorder (
+		char** _posto, 
+		char* _inosta, 
+		char* _inend) {
+	// TODO...
+	return NULL;
+}
 
 static void _bt_inordertraversal (pbtree _t, bt_visitf _func) {
 	if (_t != NULL) {

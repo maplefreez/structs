@@ -37,6 +37,10 @@ typedef struct _btree {
  * each `btree' empty. */
 typedef void (*bt_visitf) (pbtnode);
 
+/* A function signature for releasing
+ * each data field on node. */
+typedef void (*bt_freef) (pbtnode);
+
 
 /* Create a new tree by inputing data list
  * and it's length. The list shell be supposed
@@ -47,7 +51,7 @@ typedef void (*bt_visitf) (pbtnode);
  * Return the new tree pointer while successful. 
  * Or NULL if $1 is NULL, empty or another unexpected
  * error (e.g. out of memory). */
-extern pbtree bt_create (void**, int);
+// extern pbtree bt_create (void**, int);
 
 
 /* Create a new tree by its preorder and inorder
@@ -60,6 +64,16 @@ extern pbtree bt_create (void**, int);
 extern pbtree bt_create_pre_inorder (char*, char*);
 
 
+/* Create a new tree by its postorder and inorder
+ * traversal sequency. If one of $1 and $2 is NULL,
+ * function return NULL, and occurring error as well.
+ * $1  The preorder secuency.
+ * $2  The inorder sequency.
+ *
+ * Return the new tree pointer while successful. */
+extern pbtree bt_create_post_inorder (char*, char*);
+
+
 /* Create a new tree node by inputing data.
  * $1  The data pointer. 
  * 
@@ -67,6 +81,7 @@ extern pbtree bt_create_pre_inorder (char*, char*);
  * Or NULL if $1 is NULL or another unexpected
  * error (e.g. out of memory). */
 extern pbtnode bt_create_node (void*);
+
 
 /* Preordering traverse each node of a tree by invoke 
  * the input function pointer $2. A default implementation 
@@ -84,6 +99,18 @@ extern void bt_posttraversal (pbtree, bt_visitf);
  * the input function pointer $2. A default implementation 
  * will be used when caller gets a NULL function. */
 extern void bt_inordertraversal (pbtree, bt_visitf);
+
+
+/* Release the memory from one pbtree entity.
+ * This function is based on the following order:
+ *	left -> right -> root.
+ * Obviously a recursive implementation matches! 
+ * $1  The tree to be released.
+ * $2  The function invoked on each node.
+ *
+ * Note: If we special NULL to $2, nothing will be done
+ * on data field, traveling each node. */
+extern void bt_release (pbtree, bt_freef);
 
 
 #endif // ~ _BTREE_H_
