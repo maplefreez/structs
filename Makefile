@@ -1,7 +1,7 @@
 CC=gcc
-CFLAGS=-g
-TESTS=t_lstring t_btree
-OBJS=lstring.o btree.o
+CFLAGS=-g -Wno-int-to-pointer-cast
+TESTS=t_lstring t_btree t_bstree
+OBJS=lstring.o btree.o bstree.o
 
 all: $(OBJS) $(TESTS)
 
@@ -13,11 +13,18 @@ t_lstring:	t_lstring.c lstring.o
 t_btree:	t_btree.c btree.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
+t_bstree: t_bstree.c btree.o bstree.o
+	$(CC) -o $@ $^ $(CFLAGS)
+
 lstring.o: lstring.c lstring.h
 	$(CC) -c $< $(CFLAGS)
 
 btree.o: btree.c btree.h
 	$(CC) -c $< $(CFLAGS)
+
+bstree.o: bstree.c bstree.h btree.h btree.o
+	$(CC) -c $< $(CFLAGS)
+
 
 clean:
 	rm -f $(TESTS) $(OBJS)
