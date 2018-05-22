@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
-#include <string.h>
+// #include <string.h>
 
 /****** Pre-defination for test suits. ******/
 static void t_bt_create_pre_inorder ();

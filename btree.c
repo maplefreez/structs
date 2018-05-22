@@ -10,6 +10,7 @@ static void _bt_posttraversal (pbtree, bt_visitf);
 static void _bt_inordertraversal (pbtree, bt_visitf);
 
 static pbtree _bt_create_pre_inorder (char**, char*, char*);
+static pbtree _bt_create_post_inorder (char**, char*, char*);
 
 /* Create a new tree by inputing data list
  * and it's length. The list shell be supposed
