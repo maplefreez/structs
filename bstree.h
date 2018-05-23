@@ -2,6 +2,7 @@
 #	define _BSTREE_H_
 
 #include "btree.h"
+#include <string.h>
 
 /* We use btree structure to implement 
  * binary-search-tree. */
@@ -24,7 +25,8 @@ typedef bt_visitf bst_visitf;
  * not, the function returns a new created one. 
  * Otherwise it returns $1.
  * $1  The target bst.
- * $2  Element data to be inserted. */
+ * $2  Element data to be inserted. 
+ * $3  Comparation function ptr. */
 extern pbstree bst_insert (pbstree, void*, bst_cmpf);
 
 
@@ -41,10 +43,25 @@ extern void bst_pretraversal (pbstree, bst_visitf);
  * binary-search-tree.
  * $1  The binary-search-tree
  * $2  The element pointer.
+ * $3  Comparation function ptr.
  *
  * It successfully returns the node ptr while
  * getting element, or NULL. */
-extern pbstnode bst_search (pbstree, void*);
+extern pbstnode bst_search (pbstree, void*, bst_cmpf);
+
+
+/* Delete a special element whose data equals to $2.
+ * $1  The binary-search-tree.
+ * $2  An element, whose value equals this data will be removed.
+ * $3  The comparation function between two elements. 
+ *
+ * Return the found node structure. */
+extern pbstnode bst_delete (pbstree, void*, bst_cmpf);
+
+
+/* Create a binary-search-tree entity by an integer array. 
+ * Return the tree while successful, or NULL. */
+extern pbstree bst_create_int_array (int*, size_t);
 
 
 #endif // ~ _BSTREE_H_

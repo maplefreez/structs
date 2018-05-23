@@ -4,6 +4,7 @@
 
 
 static int _default_cmp_func (void*, void*);
+static int _cmp_integer (void*, void*);
 
 
 pbstree bst_insert (pbstree _t, void* _data, bst_cmpf _func) {
@@ -40,13 +41,46 @@ void bst_pretraversal (pbstree _t, bst_visitf _func) {
 	bt_pretraversal ((pbtree) _t, (bt_visitf) _func);
 }
 
-pbstnode bst_search (pbstree _t, void* _e) {
+pbstnode bst_search (pbstree _t, 
+		void* _e, bst_cmpf _func) {
+	pbstnode ptr = _t;
+	if (! _func) _func = _default_cmp_func;
+
+	/* Search loop. */
+	while (ptr) {
+		int cmp_code = _func (ptr -> data, _e);
+		if (cmp_code == CMP_GT)  // To left child tree.
+			ptr = ptr -> left;
+		else if (cmp_code == CMP_LT) // To right child tree.
+			ptr = ptr -> right;
+		else return 
+			ptr;
+	}
+
 	return NULL;
+}
+
+
+pbstree bst_create_int_array (int* _arr, size_t _num) {
+	int i = 0;
+	pbstree t = NULL;
+	if (_num == 0 || ! _arr) return NULL;
+
+	for (; i < _num; ++ i)
+		t = bst_insert (t, (void*) (_arr [i]), _cmp_integer);
+	return t;
 }
 
 
 static int _default_cmp_func (void* _a, void* _b) {
 	if (_a == _b) return CMP_EQ;
 	return _a < _b ? CMP_LT : CMP_GT;
+}
+
+static int _cmp_integer (void* _a, void* _b) {
+	signed long long a = (signed long long) _a;
+	signed long long b = (signed long long) _b;
+	if (a == b) return CMP_EQ;
+	return a > b ? CMP_GT : CMP_LT;
 }
 
