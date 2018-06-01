@@ -5,6 +5,8 @@
 
 static int _default_cmp_func (void*, void*);
 static int _cmp_integer (void*, void*);
+static pbstnode _bst_delete_node (pbstree, bst_freef);
+static void _default_free_func (pbtnode _node) {}
 
 
 pbstree bst_insert (pbstree _t, void* _data, bst_cmpf _func) {
@@ -69,6 +71,80 @@ pbstree bst_create_int_array (int* _arr, size_t _num) {
 	for (; i < _num; ++ i)
 		t = bst_insert (t, (void*) (_arr [i]), _cmp_integer);
 	return t;
+}
+
+
+// TODO...
+// void* bst_delete (pbstree _t, void* _e, 
+// 		bst_cmpf _func, bst_freef _freef) {
+// 	void* res = NULL;
+// 	pbstnode deleted = _bst_delete (_t, _e, _func, _freef);
+// 
+// 	if (deleted) res = deleted -> data;
+// 	free (deleted);
+// 
+// 	return res;
+// }
+
+
+/* TODO: I think it something wrong! */
+void bst_delete1 (pbstree _t, void* _e, 
+		bst_cmpf _func, bst_freef _freef) {
+	// _freef == NULL && 
+	// 	(_freef = _default_free_func);
+	if (_freef == NULL)
+	_freef = _default_free_func;
+
+	if (! _t) return;
+
+	if (_func (_t -> data, _e) == CMP_EQ) 
+		/* _t = (pbstree)*/ _bst_delete_node (_t, _freef);
+	else if (_func (_t -> data, _e) == CMP_LT)
+		/* _t = (pbstree)*/ bst_delete1 (_t -> right, _e, _func, _freef);
+	else 
+		/* _t = (pbstree)*/ bst_delete1 (_t -> left, _e, _func, _freef);
+}
+
+
+static pbstnode _bst_delete_node (pbstree node, bst_freef _freef) {
+	pbstnode ret = NULL;
+	if (! node -> right) {
+		/* If the node has no right child 
+		 * or left neither. */
+		ret = node -> left;
+		_freef (node -> data);
+		free (node);
+	} else if (! node -> left) {
+		/* The node has no left child. */
+		ret = node -> right;
+		_freef (node -> data);
+		free (node);
+	} else {
+		/* The node has both left and right. */
+		pbstnode parent = node, 
+						 replace = node -> left; // It must not be NULL.
+
+		/* We found it's immediate predecessor.
+		 * It must own left child but no right child 
+		 * (certainly NULL). And its left child might 
+		 * be NULL. */
+		while (replace -> right)
+		{
+			parent = replace;
+			replace = replace -> right;
+		}
+		node -> data = replace -> data;
+
+		if (parent == node)
+			parent -> left = replace -> left;
+		else
+			parent -> right = replace -> left;
+
+		free (replace);
+		_freef (node -> data);
+	}
+
+	return ret;
 }
 
 

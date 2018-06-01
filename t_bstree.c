@@ -8,12 +8,14 @@
 /****** Pre-defination for test suits. ******/
 static void t_bst_insert ();
 static void t_bst_search ();
+static void t_bst_delete ();
 static void t_bst_visit_func (pbstnode);
 static int _cmp_integer (void*, void*);
 
 int main (int argc, char* argv []) {
-	t_bst_insert ();
-	t_bst_search ();
+	// t_bst_insert ();
+	// t_bst_search ();
+	t_bst_delete ();
 	return 0;
 }
 
@@ -45,6 +47,35 @@ static void t_bst_visit_func (pbstnode _node) {
 	if (_node) 
 		printf ("%d ", _node -> data);
 }
+
+
+static void t_bst_delete () {
+	int i = 0, num = 0;;
+	int array [] = { 
+		32, 43, 92, 1, 
+		31, 8, 12, 500, 
+		2, 4 
+	};
+
+	pbstree tree = NULL;
+	pbstnode node = NULL;
+	num = sizeof (array) / sizeof (int);
+
+	tree = bst_create_int_array (array, num);
+	puts ("");
+	bt_inordertraversal ((pbtree) tree, (bt_visitf) t_bst_visit_func);
+	assert (tree != NULL);
+
+	bst_delete1 (tree, (void*) 500, _cmp_integer, NULL);
+	assert 
+	(
+		NULL == bst_search (tree, (void*) 500, _cmp_integer)
+	);
+
+	puts ("");
+	bt_inordertraversal ((pbtree) tree, (bt_visitf) t_bst_visit_func);
+}
+
 
 static void t_bst_search () {
 	int i = 0, num = 0;;

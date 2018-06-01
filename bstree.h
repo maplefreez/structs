@@ -52,16 +52,21 @@ extern pbstnode bst_search (pbstree, void*, bst_cmpf);
 
 /* Delete a special element whose data equals to $2.
  * $1  The binary-search-tree.
- * $2  An element, whose value equals this data will be removed.
+ * $2  An element, whose value equals this data 
+ *   will be removed.
  * $3  The comparation function between two elements. 
  *
- * Return the found node structure. */
-extern pbstnode bst_delete (pbstree, void*, bst_cmpf);
+ * Successfully return the data domain ptr, and 
+ * NULL is otherwise. */
+extern void* bst_delete (pbstree, void*, bst_cmpf, bst_freef);
 
 
 /* Create a binary-search-tree entity by an integer array. 
  * Return the tree while successful, or NULL. */
 extern pbstree bst_create_int_array (int*, size_t);
+
+/* Another deletion implementation. */
+extern void bst_delete1 (pbstree, void*, bst_cmpf, bst_freef);
 
 
 #endif // ~ _BSTREE_H_
