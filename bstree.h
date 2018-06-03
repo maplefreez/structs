@@ -66,7 +66,7 @@ extern void* bst_delete (pbstree, void*, bst_cmpf, bst_freef);
 extern pbstree bst_create_int_array (int*, size_t);
 
 /* Another deletion implementation. */
-extern void bst_delete1 (pbstree, void*, bst_cmpf, bst_freef);
+extern pbstree bst_delete1 (pbstree, void*, bst_cmpf, bst_freef);
 
 
 #endif // ~ _BSTREE_H_

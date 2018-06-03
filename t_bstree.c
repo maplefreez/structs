@@ -52,9 +52,10 @@ static void t_bst_visit_func (pbstnode _node) {
 static void t_bst_delete () {
 	int i = 0, num = 0;;
 	int array [] = { 
-		32, 43, 92, 1, 
-		31, 8, 12, 500, 
-		2, 4 
+		32, 15, 5, 16, 4, 6,
+		10, 8, 12, 2, 3,
+		43, 35, 34, 33, 36,
+		92, 500
 	};
 
 	pbstree tree = NULL;
@@ -66,7 +67,8 @@ static void t_bst_delete () {
 	bt_inordertraversal ((pbtree) tree, (bt_visitf) t_bst_visit_func);
 	assert (tree != NULL);
 
-	bst_delete1 (tree, (void*) 500, _cmp_integer, NULL);
+	/* Delete 500 */
+	tree = bst_delete1 (tree, (void*) 500, _cmp_integer, NULL);
 	assert 
 	(
 		NULL == bst_search (tree, (void*) 500, _cmp_integer)
@@ -74,6 +76,29 @@ static void t_bst_delete () {
 
 	puts ("");
 	bt_inordertraversal ((pbtree) tree, (bt_visitf) t_bst_visit_func);
+
+	/* Delete 5 */
+	tree = bst_delete1 (tree, (void*) 5, _cmp_integer, NULL);
+	assert 
+	(
+		NULL == bst_search (tree, (void*) 5, _cmp_integer)
+	);
+
+	puts ("");
+	bt_inordertraversal ((pbtree) tree, (bt_visitf) t_bst_visit_func);
+
+	/* Delete 10 */
+	tree = bst_delete1 (tree, (void*) 10, _cmp_integer, NULL);
+	assert 
+	(
+		NULL == bst_search (tree, (void*) 5, _cmp_integer)
+	);
+
+	puts ("");
+	bt_inordertraversal ((pbtree) tree, (bt_visitf) t_bst_visit_func);
+
+	/* Release */
+	bst_release (tree, NULL);
 }
 
 

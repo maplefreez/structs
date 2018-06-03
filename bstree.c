@@ -74,35 +74,27 @@ pbstree bst_create_int_array (int* _arr, size_t _num) {
 }
 
 
-// TODO...
-// void* bst_delete (pbstree _t, void* _e, 
-// 		bst_cmpf _func, bst_freef _freef) {
-// 	void* res = NULL;
-// 	pbstnode deleted = _bst_delete (_t, _e, _func, _freef);
-// 
-// 	if (deleted) res = deleted -> data;
-// 	free (deleted);
-// 
-// 	return res;
-// }
-
-
-/* TODO: I think it something wrong! */
-void bst_delete1 (pbstree _t, void* _e, 
+pbstree bst_delete1 (pbstree _t, void* _e,
 		bst_cmpf _func, bst_freef _freef) {
-	// _freef == NULL && 
-	// 	(_freef = _default_free_func);
+	/* Ensure free function isn't NULL. */
 	if (_freef == NULL)
-	_freef = _default_free_func;
+		_freef = _default_free_func;
 
-	if (! _t) return;
+	if (! _t) return _t;
 
-	if (_func (_t -> data, _e) == CMP_EQ) 
-		/* _t = (pbstree)*/ _bst_delete_node (_t, _freef);
+	if (_func (_t -> data, _e) == CMP_EQ)
+		/* If the _t node is the
+		 * one to be deleted. */
+		_t = (pbstree) _bst_delete_node (_t, _freef);
 	else if (_func (_t -> data, _e) == CMP_LT)
-		/* _t = (pbstree)*/ bst_delete1 (_t -> right, _e, _func, _freef);
-	else 
-		/* _t = (pbstree)*/ bst_delete1 (_t -> left, _e, _func, _freef);
+		/* Turn right */
+		_t -> right = (pbstnode) bst_delete1 (
+				_t -> right, _e, _func, _freef);
+	else
+		/* Turn left */
+		_t -> left = (pbstnode) bst_delete1 (
+				_t -> left, _e, _func, _freef);
+	return _t;
 }
 
 
@@ -142,6 +134,7 @@ static pbstnode _bst_delete_node (pbstree node, bst_freef _freef) {
 
 		free (replace);
 		_freef (node -> data);
+		ret = node;
 	}
 
 	return ret;
