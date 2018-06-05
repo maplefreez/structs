@@ -1,6 +1,6 @@
-/* A threaded binary tree implementation. It making
- * all right child pointers that would normally be 
- * null point to the inorder successor of the node 
+/* A double threaded binary tree implementation. It 
+ * making all right child pointers that would normally 
+ * be null point to the inorder successor of the node 
  * and all left child pointers that would normally
  * be null point to the inorder predecessor of the
  * node.
@@ -26,6 +26,11 @@ typedef struct _thrbtree {
 	struct _thrbtree* left, *right;
 	void* data;
 } thrbtree, *pthrbtree;
+
+enum thrbtree_ptrflag {
+	LINK = 0,
+	THREAD
+}
 
 
 /* Create a new threaded binary tree by its preorder 
@@ -68,6 +73,9 @@ extern void thrbt_posttraversal (pthrbtree, bt_visitf);
  * the input function pointer $2. A default implementation 
  * will be used when caller gets a NULL function. */
 extern void thrbt_inordertraversal (pthrbtree, bt_visitf);
+
+
+extern void thrbt_inorderthreaded (pthrbtree);
 
 
 /* Release the memory from one pbtree entity.
