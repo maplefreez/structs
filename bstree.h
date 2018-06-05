@@ -1,3 +1,18 @@
+/*
+ * A simple binary search tree defination.
+ * We directly use btree implementation.
+ *
+ * Author : ez
+ * Date : 2018/5/22
+ *
+ *      __         __               
+ *		 / /_  _____/ /_________  ___ 
+ *		/ __ \/ ___/ __/ ___/ _ \/ _ \
+ *	 / /_/ (__  ) /_/ /  /  __/  __/
+ *	/_.___/____/\__/_/   \___/\___/ 
+ *					                                
+ */
+
 #ifndef _BSTREE_H_
 #	define _BSTREE_H_
 
