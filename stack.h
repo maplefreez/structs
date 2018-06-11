@@ -1,6 +1,8 @@
 #ifndef _STACK_H_
 #	define _STACK_H_
 
+#include "common.h"
+
 #	define DEFAULT_STACK_CAPACITY  (0x10)
 
 typedef void* anytype;
@@ -43,7 +45,41 @@ extern parrstack arrstack_create (int);
  */
 extern void arrstack_push (parrstack, anytype);
 
+/* Pop the top element pointer and removed 
+ * it from a stack. If the stack is empty, 
+ * return NULL.
+ *
+ * $1  The stack pointer. If input is NULL,
+ *      return NULL. 
+ *
+ * Return the top element pointer. */
+extern anytype arrstack_pop (parrstack);
+
+
+/* Test whether the stack has no element.
+ *
+ * $1  The stack pointer.
+ *
+ * Return : 
+ * Empty -> 1
+ * Not empty -> 0
+ * Note: The $1 must not be NULL, cuz the
+ * function cannot assert this condition. */
 extern int arrstack_isempty (parrstack);
 
+
+/* Release a stack. Memory of each element 
+ * shell be freed by user-defined callback.
+ *
+ * $1  The stack pointer.
+ * $2  The user-defined callback. 
+ *
+ * Note: Nothing will be done when $1 is NULL.
+ * If user input a NULL callback, the function
+ * invokes an inner default implementation one,
+ * that's, doing NOTHING. */
+extern void arrstack_release (parrstack, freehook);
+
 #endif // ~ _STACK_H_
+
 
