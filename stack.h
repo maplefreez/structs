@@ -56,6 +56,14 @@ extern void arrstack_push (parrstack, anytype);
 extern anytype arrstack_pop (parrstack);
 
 
+/* Return the top element but donot remove it.
+ * $1  The stack ptr. 
+ * 
+ * If $1 is NULL or it's an empty stack, 
+ * return NULL.*/
+extern anytype arrstack_peak (parrstack);
+
+
 /* Test whether the stack has no element.
  *
  * $1  The stack pointer.

@@ -12,7 +12,7 @@ parrstack arrstack_create (int _capa) {
 	if (_capa <= 0) 
 		_capa = DEFAULT_STACK_CAPACITY;
 
-	res = (parrstack) malloc (arrstack);
+	res = (parrstack) malloc (sizeof (arrstack));
 	if (! res) return res;
 
 	res -> capacity = _capa;
@@ -88,12 +88,21 @@ int arrstack_isempty (parrstack _s) {
 }
 
 
+anytype arrstack_peak (parrstack _s) {
+	if (_s || arrstack_isempty (_s)) 
+		return NULL;
+
+	return _s -> base [_s -> top - 1];
+}
+
+
+
 anytype arrstack_pop (parrstack _s) {
 	anytype res = NULL;
 	if (! _s || arrstack_isempty (_s)) 
 		return res;
 
-	res = (_s -> _base) [-- top];
+	res = (_s -> base) [-- _s -> top];
 	return res;
 }
 

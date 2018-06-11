@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-g -Wno-int-to-pointer-cast
 TESTS=t_lstring t_btree t_bstree
-OBJS=lstring.o btree.o bstree.o
+OBJS=lstring.o btree.o bstree.o stack.o
 
 all: $(OBJS) $(TESTS)
 
@@ -24,6 +24,10 @@ btree.o: btree.c btree.h
 
 bstree.o: bstree.c bstree.h btree.h btree.o
 	$(CC) -c $< $(CFLAGS)
+
+stack.o:	stack.c stack.h common.h
+	$(CC) -c $< $(CFLAGS)
+
 
 
 clean:
