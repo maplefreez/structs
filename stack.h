@@ -1,6 +1,7 @@
 #ifndef _STACK_H_
 #	define _STACK_H_
 
+#include <stdlib.h>
 #include "common.h"
 
 #	define DEFAULT_STACK_CAPACITY  (0x10)

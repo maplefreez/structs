@@ -117,6 +117,9 @@ void arrstack_release (parrstack _s, freehook _freef) {
 			tmp != -1; -- tmp)
 		_freef (_s -> base [tmp]);
 
+	/* In effect it should not 
+	 * get NULL. */
+	if (_s -> base) free (_s -> base);
 	free (_s);
 }
 
