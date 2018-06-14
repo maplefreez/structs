@@ -89,7 +89,7 @@ int arrstack_isempty (parrstack _s) {
 
 
 anytype arrstack_peak (parrstack _s) {
-	if (_s || arrstack_isempty (_s)) 
+	if (! _s || arrstack_isempty (_s)) 
 		return NULL;
 
 	return _s -> base [_s -> top - 1];

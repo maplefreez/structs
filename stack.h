@@ -1,3 +1,16 @@
+/*
+ * Stack implementation, with array approach.
+ *
+ * Author : ez
+ * Date : 2018/6/9
+ *
+ * +-+-+-+-+-+
+ * |s|t|a|c|k|
+ * +-+-+-+-+-+
+ *					                                
+ */
+
+
 #ifndef _STACK_H_
 #	define _STACK_H_
 
