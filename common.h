@@ -11,10 +11,14 @@ typedef int rtn_status;
 #	define CMP_EQ   0
 #	define CMP_LT   1
 
-/* A free-memory callback prototype. */
-typedef void (*freehook) (const void*);
 
 /* Any type for data. */
 typedef void* anytype;
+
+/* Common comparation function prototype. */
+typedef int (*cmphook) (const anytype, const anytype);
+
+/* A free-memory callback prototype. */
+typedef void (*freehook) (const void*);
 
 #endif // ~ _COMMON_H_

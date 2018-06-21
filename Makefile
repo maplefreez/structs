@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-g -Wno-int-to-pointer-cast
-TESTS=t_lstring t_btree t_bstree t_stack
-OBJS=lstring.o btree.o bstree.o stack.o
+TESTS=t_lstring t_btree t_bstree t_stack t_sort
+OBJS=lstring.o btree.o bstree.o stack.o sort.o
 
 all: $(OBJS) $(TESTS)
 
@@ -19,6 +19,9 @@ t_bstree: t_bstree.c btree.o bstree.o
 t_stack:	t_stack.c stack.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
+t_sort:	t_sort.c sort.o
+	$(CC) -o $@ $^ $(CFLAGS)
+
 lstring.o: lstring.c lstring.h
 	$(CC) -c $< $(CFLAGS)
 
@@ -31,7 +34,8 @@ bstree.o: bstree.c bstree.h btree.h btree.o
 stack.o:	stack.c stack.h common.h
 	$(CC) -c $< $(CFLAGS)
 
-
+sort.o:	sort.c sort.h common.h
+	$(CC) -c $< $(CFLAGS)
 
 clean:
 	rm -f $(TESTS) $(OBJS)
