@@ -19,7 +19,7 @@
 
 #	define DEFAULT_STACK_CAPACITY  (0x10)
 
-typedef void* anytype;
+// typedef void* anytype;
 
 /* A simpe stack structure implemented by
  * an array. */

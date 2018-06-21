@@ -14,4 +14,7 @@ typedef int rtn_status;
 /* A free-memory callback prototype. */
 typedef void (*freehook) (const void*);
 
+/* Any type for data. */
+typedef void* anytype;
+
 #endif // ~ _COMMON_H_
