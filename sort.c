@@ -102,6 +102,54 @@ anytype* select_sort (
 
 }
 
+
+anytype* bubble_sort (
+		anytype* _seq, int _num, cmphook _cmp) {
+	int i, j, cmp;
+	anytype x;
+
+	if (! _seq) return NULL;
+	if (! _cmp) _cmp = _default_cmp_func;
+
+	for (i = 0; i < _num; ++ i) {
+		for (j = 0; j < _num - i - 1; ++ j) {
+			x = _seq [j + 1];
+
+			cmp = _cmp (_seq [j], x);
+			if (cmp == CMP_GT) {
+				_seq [j + 1] = _seq [j];
+				_seq [j] = x;
+			}
+		}
+	}
+
+	return _seq;
+}
+
+
+anytype* bubble_sort1 (
+		anytype* _seq, int _num, cmphook _cmp) {
+	int i, j, cmp;
+	anytype x;
+
+	if (! _seq) return NULL;
+	if (! _cmp) _cmp = _default_cmp_func;
+
+	for (i = 0; i < _num; ++ i) {
+		for (j = _num - 1; j >= i; -- j) {
+			x = _seq [j + 1];
+
+			cmp = _cmp (_seq [j], x);
+			if (cmp == CMP_GT) {
+				_seq [j + 1] = _seq [j];
+				_seq [j] = x;
+			}
+		}
+	}
+
+	return _seq;
+}
+
 static int _default_cmp_func (const anytype _a, const anytype _b) {
 	if (_a == _b) return CMP_EQ;
 	return _a < _b ? CMP_LT : CMP_GT;
