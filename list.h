@@ -27,13 +27,32 @@ typedef struct _arraylist {
 /* Create a new array list without
  * any input data. It hold a default
  * length array, defined by macro 
- * __DEF_ARRAYLIST_LEN__ . */
+ * __DEF_ARRAYLIST_LEN__ . 
+ *
+ * Return the ptr of new list entity. 
+ * Or return NULL while error occured. */
 extern parraylist new_arraylist ();
+
+
 extern parraylist create_arraylist (int);
 extern parraylist create_arraylist_by_arr (anytype*, int);
 
-extern void release_arraylist (parraylist);
+extern void release_arraylist (parraylist, freehook);
+
+
+/* Insert an element into a separated place.
+ * $1  The linear list entity.
+ * $2  The element.
+ * $3  The separated place to be insert, 
+ *		which it ranges from 0 to the value 
+ *		of the current [count] of element, the 
+ *		head of the list if 0, and the rear 
+ *		of the list if [count];
+ *
+ * Return erronious 0, or successfully return 1. */
 extern int insert_arraylist (parraylist, anytype, int);
+
+
 extern anytype delete_arraylist (parraylist, int);
 extern int find_arraylist (parraylist, anytype, cmphook);
 
@@ -51,7 +70,7 @@ typedef struct _linklist {
 	int count;
 } linklist, *plinklist;
 
-extern plinklist new_arraylist ();
+extern plinklist new_linklist ();
 extern plinklist create_linklist_by_arr (anytype*, int);
 
 extern void release_linklist (plinklist);
