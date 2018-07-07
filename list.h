@@ -54,6 +54,15 @@ extern int insert_arraylist (parraylist, anytype, int);
 
 
 extern anytype delete_arraylist (parraylist, int);
+
+/* Find the index by an element key.
+ *
+ * $1  The list entity.
+ * $2  The element key.
+ * $3  The user-defined comparation function.
+ *
+ * Return -1 if the key isn't existing. Or 
+ * return the first reached index. */
 extern int find_arraylist (parraylist, anytype, cmphook);
 
 
