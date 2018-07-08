@@ -67,7 +67,10 @@ extern int find_arraylist (parraylist, anytype, cmphook);
 
 
 /* List node for linked-list implementation. */
+typedef struct _listnode listnode, *plistnode;
+
 typedef struct _listnode {
+	plistnode next;
 	anytype data;
 } listnode, *plistnode;
 
@@ -75,15 +78,35 @@ typedef struct _listnode {
 /* The header of a linear list stored
  * with linked list structure. */
 typedef struct _linklist {
-	plistnode next;
+	plistnode first;
 	int count;
 } linklist, *plinklist;
 
+
+/* Create a new linked-list without any
+ * element. 
+ *
+ * Return the pointer to the new one. 
+ * Return NULL if there remains no memory. */
 extern plinklist new_linklist ();
+
+
 extern plinklist create_linklist_by_arr (anytype*, int);
 
-extern void release_linklist (plinklist);
+extern void release_linklist (plinklist, freehook);
+
+/* Insert an element into a separated place.
+ * $1  The linked list entity.
+ * $2  The element.
+ * $3  The separated place to be insert, 
+ *		which it ranges from 0 to the value 
+ *		of the current [count] of element, the 
+ *		head of the list if 0, and the rear 
+ *		of the list if [count];
+ *
+ * Return erronious 0, or successfully return 1. */
 extern int insert_linklist (plinklist, anytype, int);
+
 extern anytype delete_linklist (plinklist, int);
 extern int find_linklist (plinklist, anytype, cmphook);
 

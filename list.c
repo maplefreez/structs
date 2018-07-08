@@ -7,6 +7,7 @@ static int __ensure_enough_mem (parraylist);
 static int __default_cmp_func (const anytype, const anytype);
 
 
+/****************** Array list *******************/
 parraylist new_arraylist () {
 	return create_arraylist (__DEF_ARRAYLIST_LEN__);
 }
@@ -149,6 +150,75 @@ int find_arraylist (parraylist _list,
 
 	return -1;
 }
+
+
+
+
+/****************** Link list *******************/
+plinklist new_linklist () {
+	plinklist list;
+
+	list = (plinklist) malloc (sizeof (linklist));
+	if (! list) return NULL;
+
+	list -> count = 0;
+	list -> first = NULL;
+	return list;
+}
+
+plinklist create_linklist_by_arr (anytype*, int);
+
+void release_linklist (plinklist, freehook);
+
+
+int insert_linklist (plinklist _list, 
+		anytype _e, int _idx) {
+	int i, preidx;
+	plistnode pre, new;
+
+	if (_idx < 0 || _idx > _list -> count) 
+		return 0;
+
+	/* Allocate a new node. */
+	new = (plistnode) malloc (sizeof (listnode));
+	if (! new) return 0;
+
+	pre = _list -> first;
+	preidx = _idx - 1;
+	i = preidx;
+
+	/* Go to the previous node. */
+	while (pre && 0 < i) {
+		pre = pre -> next;
+		-- i;
+	}
+
+	if (i == -1) {
+		/* idx == 0. That is, we
+		 * place a new node at the
+		 * first index. */
+		new -> next = pre;
+		_list -> first = new;
+	} else {
+		/* Variable i must be greater
+		 * than compared with -1; Note
+		 * this situation is to insert
+		 * a new node at a index, which
+		 * ranges from [1, count]. 
+		 * And "index = count" means 
+		 * appending it to the rear. */
+		new -> next = pre -> next;
+		pre -> next = new;
+	}
+
+	new -> data = _e;
+	_list -> count ++;
+	return 1;
+}
+
+
+anytype delete_linklist (plinklist, int);
+int find_linklist (plinklist, anytype, cmphook);
 
 
 static void __def_free_hook (const void* _x) 
