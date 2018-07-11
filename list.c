@@ -168,7 +168,25 @@ plinklist new_linklist () {
 
 plinklist create_linklist_by_arr (anytype*, int);
 
-void release_linklist (plinklist, freehook);
+
+void release_linklist (
+		plinklist _list, freehook _func) {
+	plistnode ptr, next;
+	if (! _list) return;
+	if (! _func) 
+		_func = __def_free_hook;
+
+	ptr = _list -> first;
+	while (ptr) {
+		next = ptr -> next;
+		_func (ptr -> data);
+		free (ptr);
+		ptr = next;
+	}
+
+	_list -> count = 0;
+	free (_list);
+}
 
 
 int insert_linklist (plinklist _list, 
@@ -218,7 +236,26 @@ int insert_linklist (plinklist _list,
 
 
 anytype delete_linklist (plinklist, int);
-int find_linklist (plinklist, anytype, cmphook);
+
+int find_linklist (plinklist _list, 
+		anytype _key, cmphook _cmp) {
+	int idx, flag;
+	plistnode ptr;
+
+	if (! _list) return -1;
+	if (! _cmp) _cmp = __default_cmp_func;
+
+	ptr = _list -> first;
+	idx = -1;
+
+	while (ptr) {
+		idx ++;
+		flag = _cmp (ptr -> data, _key);
+		if (flag == CMP_EQ) return idx;
+	}
+
+	return -1;
+}
 
 
 static void __def_free_hook (const void* _x) 
