@@ -71,6 +71,29 @@ void bt_inordertraversal (pbtree _t, bt_visitf _func) {
 	_bt_inordertraversal (_t, _func);
 }
 
+
+void bt_leveltraversal (pbtree _t, bt_visitf _func) {
+	/* TODO Sorry for no queue structure available. */
+	// pqueue q;
+	// pbtnode ptr;
+	// 
+	// if (_t) {
+	// 	if (! _func) _func = _default_visit_func;
+	// 	q = queue_create ();
+	// 	ptr = (pbtnode) _t;
+	// 	queue_enqueue (q, ptr);
+
+	// 	/* Start traversing. */
+	// 	while (! queue_isempty (q)) {
+	// 		pbtnode x = (pbtnode) queue_dequeue (q);
+	// 		_func (x);
+	// 		if (x -> left) queue_enqueue (q, x -> left);
+	// 		if (x -> right) queue_enqueue (q, x -> right);
+	// 	}
+	// 	
+	// }
+}
+
 void bt_release (pbtree _t, bt_freef _func) {
 	if (_t) {
 		bt_release (_t -> left, _func);

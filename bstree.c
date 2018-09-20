@@ -43,6 +43,23 @@ void bst_pretraversal (pbstree _t, bst_visitf _func) {
 	bt_pretraversal ((pbtree) _t, (bt_visitf) _func);
 }
 
+
+// TODO test
+void* bst_getmax (pbstree _t) {
+	if (! _t) return NULL;
+	while (_t) _t = _t -> right;
+	return _t -> data;
+}
+
+
+// TODO test
+void* bst_getmin (pbstree _t) {
+	if (! _t) return NULL;
+	while (_t) _t = _t -> left;
+	return _t -> data;
+}
+
+
 pbstnode bst_search (pbstree _t, 
 		void* _e, bst_cmpf _func) {
 	pbstnode ptr = _t;

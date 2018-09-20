@@ -11,6 +11,10 @@ all: $(OBJS) $(TESTS)
 
 test:	$(TESTS)
 
+NETM:
+	$(MAKE) -C NETM/ all
+
+
 t_lstring:	t_lstring.c lstring.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
@@ -52,4 +56,7 @@ list.o:	list.c list.h common.h
 
 clean:
 	rm -f $(TESTS) $(OBJS)
+	$(MAKE) -C NETM/ clean
+
+
 

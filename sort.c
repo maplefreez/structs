@@ -150,6 +150,29 @@ anytype* bubble_sort1 (
 	return _seq;
 }
 
+
+anytype* shell_sort (
+		anytype* _seq, int _num, cmphook _cmp) {
+}
+
+
+void _shell_sort (anytype* _seq, int _num, int _step, cmphook _cmp) {
+	// TODO...
+	/*
+	for (i = 0; i < _num; i += _step) {
+		x = _seq [i + 1];
+		for (j = i; j < _num; j += _step) {
+			cmp = _cmp (_seq [j], x);
+			if (cmp == CMP_GT)
+				_seq [j + 1] = _seq [j];
+		}
+
+		_seq [j] = x;
+	}
+	*/
+}
+
+
 static int _default_cmp_func (const anytype _a, const anytype _b) {
 	if (_a == _b) return CMP_EQ;
 	return _a < _b ? CMP_LT : CMP_GT;

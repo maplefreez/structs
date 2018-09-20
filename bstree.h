@@ -54,6 +54,20 @@ extern void bst_release (pbstree, bst_freef);
  * tree by calls bt_pretraversal. */
 extern void bst_pretraversal (pbstree, bst_visitf);
 
+
+/* Get the maximum key value from a BST. 
+ * Return the data domain. If input $1 is NULL,
+ * return NULL. */
+extern void* bst_getmax (pbstree);
+
+
+
+/* Get the minimum key value from a BST. 
+ * Return the data domain. If input $1 is NULL,
+ * return NULL. */
+extern void* bst_getmin (pbstree);
+
+
 /* Search a special element from a separated 
  * binary-search-tree.
  * $1  The binary-search-tree

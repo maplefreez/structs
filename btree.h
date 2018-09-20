@@ -101,6 +101,12 @@ extern void bt_posttraversal (pbtree, bt_visitf);
 extern void bt_inordertraversal (pbtree, bt_visitf);
 
 
+/* Traverse tree node with each level, by invoke the
+ * input function pointer $2. A default implementation
+ * will be used when caller gets a NULL function. */
+extern void bt_leveltraversal (pbtree, bt_visitf);
+
+
 /* Release the memory from one pbtree entity.
  * This function is based on the following order:
  *	left -> right -> root.
