@@ -6,11 +6,13 @@
 
 /****** Pre-defination for test suits. ******/
 static void t_bt_create_pre_inorder ();
+static void t_bt_inordertraversal1 ();
 static void t_bt_visit_func (pbtnode);
 
 /* Main test entry. */
 int main (int argc, char* argv []) {
-	t_bt_create_pre_inorder ();
+	// t_bt_create_pre_inorder ();
+	t_bt_inordertraversal1 ();
 	return 0;
 }
 
@@ -26,6 +28,18 @@ static void t_bt_create_pre_inorder () {
 	bt_posttraversal (tree, t_bt_visit_func);
 	puts ("");
 	bt_inordertraversal (tree, t_bt_visit_func);
+
+	bt_release (tree, NULL);
+}
+
+
+static void t_bt_inordertraversal1 () {
+	char* preorder = "CBKEDFMGHQS";
+	char* inorder = "KDEBCMGHFSQ";
+
+	pbtree tree = bt_create_pre_inorder (preorder, inorder);
+	puts ("");
+	bt_inordertraversal1 (tree, t_bt_visit_func);
 
 	bt_release (tree, NULL);
 }

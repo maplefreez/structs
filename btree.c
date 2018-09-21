@@ -1,7 +1,9 @@
-#include "btree.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "btree.h"
+#include "stack.h"
 
 
 static void _default_visit_func (pbtnode);
@@ -65,6 +67,36 @@ static void _bt_posttraversal (pbtree _t, bt_visitf _func) {
 		_func (_t);
 	}
 }
+
+
+// TODO test
+void bt_inordertraversal1 (pbtree _t, bt_visitf _func) {
+	parrstack s = NULL; pbtnode ptr = _t;
+	if (! ptr) return;
+	if (! _func) _func = _default_visit_func;
+
+	s = arrstack_create (INIT_STACK_LEN);
+	if (! s) return; /* Doing nothing. */
+
+	/* Visit. */
+	while (ptr || ! arrstack_isempty (s)) {
+		if (ptr) {
+			/* Turn left left left... 
+			 * till the end. */
+			arrstack_push (s, ptr);
+			ptr = ptr -> left;
+		} else {
+			/* Push right child. */
+			ptr = arrstack_pop (s);
+			_func (ptr);
+			ptr = ptr -> right;
+			// arrstack_push (s, ptr -> right);
+		}
+	}
+
+	arrstack_release (s, NULL);
+}
+
 
 void bt_inordertraversal (pbtree _t, bt_visitf _func) {
 	if (! _func) _func = _default_visit_func;

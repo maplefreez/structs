@@ -16,6 +16,8 @@
 #ifndef _BTREE_H_
 #	define _BTREE_H_
 
+#	define INIT_STACK_LEN    0x8
+
 typedef struct _btree btree, btnode, 
 				*pbtree, *pbtnode;
 
@@ -99,6 +101,13 @@ extern void bt_posttraversal (pbtree, bt_visitf);
  * the input function pointer $2. A default implementation 
  * will be used when caller gets a NULL function. */
 extern void bt_inordertraversal (pbtree, bt_visitf);
+
+/* Inordering traverse each node of a tree by invoke 
+ * the input function pointer $2. This function use 
+ * non-recursively implemention. A default $2 
+ * implementation will be used when caller gets a 
+ * NULL function. */
+extern void bt_inordertraversal1 (pbtree, bt_visitf);
 
 
 /* Traverse tree node with each level, by invoke the

@@ -61,7 +61,6 @@ extern void bst_pretraversal (pbstree, bst_visitf);
 extern void* bst_getmax (pbstree);
 
 
-
 /* Get the minimum key value from a BST. 
  * Return the data domain. If input $1 is NULL,
  * return NULL. */
