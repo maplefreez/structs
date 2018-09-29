@@ -55,6 +55,7 @@ list.o:	list.c
 
 clean:
 	rm -f $(TESTS) $(OBJS)
+	rm -f *.gch
 	$(MAKE) -C NETM/ clean
 
 

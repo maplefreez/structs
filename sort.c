@@ -150,26 +150,38 @@ anytype* bubble_sort1 (
 	return _seq;
 }
 
-
+// TODO... Testing.
+/* By default, I implement ascending sort. */
 anytype* shell_sort (
 		anytype* _seq, int _num, cmphook _cmp) {
+	if (! _seq) return NULL;
+	if (! _cmp) _cmp = _default_cmp_func;
+
+	_shell_sort (_seq, _num, _cmp);
+	return _seq;
 }
 
 
-void _shell_sort (anytype* _seq, int _num, int _step, cmphook _cmp) {
-	// TODO...
-	/*
-	for (i = 0; i < _num; i += _step) {
-		x = _seq [i + 1];
-		for (j = i; j < _num; j += _step) {
-			cmp = _cmp (_seq [j], x);
-			if (cmp == CMP_GT)
-				_seq [j + 1] = _seq [j];
-		}
+void _shell_sort (anytype* _seq, int _num, cmphook _cmp) {
+	/* As a cache. Note the index begin from zero.*/
+	anytype tmp; int i, j, d;
 
-		_seq [j] = x;
+	/* Generate distance sequence: 
+	 * d(n) = [d(n-1) / 2]
+	 * d(1) = [n / 2] */
+	for (d = _num / 2; d >= 1; d /= 2) {
+		/* First element for each group. */
+		for (i = d; i < _num; i ++) {
+			/* We use direct insertion sort as 
+			 * inner sort algo. */
+			tmp = _seq [i];
+			for (j = i - d; j >= 0; j -= d)
+				if (CMP_GT == _cmp (_seq [j], tmp))
+					_seq [j + d] = _seq [j];
+			_seq [j + d] = tmp;
+		}
 	}
-	*/
+
 }
 
 
