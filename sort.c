@@ -150,7 +150,6 @@ anytype* bubble_sort1 (
 	return _seq;
 }
 
-// TODO... Testing.
 /* By default, I implement ascending sort. */
 anytype* shell_sort (
 		anytype* _seq, int _num, cmphook _cmp) {
@@ -175,10 +174,12 @@ void _shell_sort (anytype* _seq, int _num, cmphook _cmp) {
 			/* We use direct insertion sort as 
 			 * inner sort algo. */
 			tmp = _seq [i];
-			for (j = i - d; j >= 0; j -= d)
-				if (CMP_GT == _cmp (_seq [j], tmp))
-					_seq [j + d] = _seq [j];
-			_seq [j + d] = tmp;
+			if (CMP_GT == _cmp (_seq [i - d], tmp)) {
+				for (j = i - d; j >= 0 &&
+						CMP_GT == _cmp (_seq [j], tmp); j -= d)
+						_seq [j + d] = _seq [j];
+				_seq [j + d] = tmp;
+			}
 		}
 	}
 
