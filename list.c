@@ -70,7 +70,6 @@ parraylist create_arraylist_by_arr (
 }
 
 
-
 void release_arraylist (
 		parraylist _list, freehook _func) {
 	int count = 0;
@@ -155,6 +154,15 @@ int find_arraylist (parraylist _list,
 
 
 /****************** Link list *******************/
+inline plistnode _new_listnode (anytype _d, plistnode _next) {
+	/* I hope the element should be numberic zero. That deems
+	 like NULL. So I donot assume the _d must be non-NULL. */
+	plistnode ret = (plistnode) malloc (sizeof (listnode));
+	if (ret) ret -> next = _next;
+	return ret;
+}
+
+
 plinklist new_linklist () {
 	plinklist list;
 
@@ -166,7 +174,35 @@ plinklist new_linklist () {
 	return list;
 }
 
-plinklist create_linklist_by_arr (anytype*, int);
+plinklist create_linklist_by_arr (anytype* _arr, int _len) {
+	int i = 0;
+	plinklist list;
+	plistnode p = NULL;
+
+	if (! _arr || _len <= 0) return NULL;
+
+	list = new_linklist ();
+	if (! list) return NULL;
+
+	p = _new_listnode (_arr [i ++]);
+	if (! p) goto err;
+	list -> first = p;
+
+	for (; i < _len; ++ i) {
+		p -> next = _new_listnode (_arr [i]);
+		if (! p -> next) goto err;
+		p = p -> next;
+	}
+
+	list -> count = i;
+	return list;
+
+err:
+	/* I donot release each element at this time.
+	 for caller must hand the input array. */
+	release_linklist (list, __def_free_hook);
+	return NULL;
+}
 
 
 void release_linklist (
@@ -235,7 +271,11 @@ int insert_linklist (plinklist _list,
 }
 
 
-anytype delete_linklist (plinklist, int);
+anytype delete_linklist (plinklist _list, int _idx) {
+	if (! _list || _idx < 0 || _idx >= _list -> count) 
+		return NULL;
+	// TODO...
+}
 
 int find_linklist (plinklist _list, 
 		anytype _key, cmphook _cmp) {

@@ -186,6 +186,12 @@ void _shell_sort (anytype* _seq, int _num, cmphook _cmp) {
 }
 
 
+anytype* quick_sort (anytype* _seq, 
+		int _num, cmphook _cmp) {
+	// TODO...
+}
+
+
 static int _default_cmp_func (const anytype _a, const anytype _b) {
 	if (_a == _b) return CMP_EQ;
 	return _a < _b ? CMP_LT : CMP_GT;

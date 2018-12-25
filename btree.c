@@ -69,7 +69,6 @@ static void _bt_posttraversal (pbtree _t, bt_visitf _func) {
 }
 
 
-// TODO test
 void bt_inordertraversal1 (pbtree _t, bt_visitf _func) {
 	parrstack s = NULL; pbtnode ptr = _t;
 	if (! ptr) return;

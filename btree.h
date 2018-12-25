@@ -75,6 +75,9 @@ extern pbtree bt_create_pre_inorder (char*, char*);
  * Return the new tree pointer while successful. */
 extern pbtree bt_create_post_inorder (char*, char*);
 
+/* TODO  */
+extern pbtree bt_create_post_inorder (char*, char*);
+
 
 /* Create a new tree node by inputing data.
  * $1  The data pointer. 

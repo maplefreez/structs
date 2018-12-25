@@ -9,6 +9,7 @@
 static void t_bst_insert ();
 static void t_bst_search ();
 static void t_bst_delete ();
+static void t_bst_getmax ();
 static void t_bst_visit_func (pbstnode);
 static int _cmp_integer (void*, void*);
 
@@ -99,6 +100,25 @@ static void t_bst_delete () {
 
 	/* Release */
 	bst_release (tree, NULL);
+}
+
+
+static void t_bst_getmax () {
+	int i = 0, num = 0;
+	int array [] = { 
+		32, 43, 92, 1, 
+		31, 8, 12, 500, 
+		2, 4 
+	};
+
+	pbstree tree = NULL;
+	pbstnode node = NULL;
+	num = sizeof (array) / sizeof (int);
+
+	tree = bst_create_int_array (array, num);
+	assert (tree != NULL);
+	
+
 }
 
 
