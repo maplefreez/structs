@@ -7,7 +7,10 @@
 /****** Pre-defination for test suits. ******/
 static void t_arraylist_insert ();
 static void t_linklist_insert ();
+static void t_linklist_delete ();
+static void t_linklist_create_by_arr ();
 static void __def_free_hook (const void*);
+
 
 
 
@@ -15,6 +18,8 @@ static void __def_free_hook (const void*);
 int main (int argc, char* argv []) {
 	t_arraylist_insert ();
 	t_linklist_insert ();
+	t_linklist_create_by_arr ();
+	t_linklist_delete ();
 	return 0;
 }
 
@@ -95,9 +100,90 @@ static void t_linklist_insert () {
 		assert (ptr && ptr -> next == NULL);
 		assert (ptr -> data == (anytype) 0xFFFFFFFF);
 
-		// release_linklist (list, __def_free_hook);
+		release_linklist (list, __def_free_hook);
 	}
 
+
+}
+
+
+static void t_linklist_create_by_arr () {
+	int i = 0;
+	anytype data [] = {
+		10, 20, 30, 40,
+		50, 60, 70, 80,
+		90, 100, 200, 300
+	};
+	plistnode node = NULL;
+	int count = sizeof (data) / sizeof (anytype);
+
+	plinklist list = create_linklist_by_arr (data, count);
+	assert (list);
+	assert (list -> count == count);
+
+	node = list -> first;
+	while (i < count && node) {
+		assert (node -> data == data [i ++]);
+		node = node -> next;
+	}
+
+	release_linklist (list, NULL);
+}
+
+
+static void t_linklist_delete () {
+	int i = 0;
+	anytype data [] = {
+		1, 2, 3, 4, 5, 6,
+		7, 8, 9, 0xA, 0xB
+	}, deleted;
+	plistnode node = NULL;
+	int count = sizeof (data) / sizeof (anytype);
+
+	plinklist list = create_linklist_by_arr (data, count);
+	assert (list);
+	assert (list -> count == count);
+
+	/* Delete 4. */
+	deleted = delete_linklist (list, 3);
+	assert (deleted == 4);
+	assert (list -> count == count - 1);
+
+	node = list -> first;
+	while (i < count && node) {
+		if (i == 3) { i ++; continue; }
+		assert (node -> data == data [i ++]);
+		node = node -> next;
+	}
+
+	/* Delete 0xB */
+	deleted = delete_linklist (list, 9);
+	assert (deleted == 0xB);
+	assert (list -> count == count - 2);
+
+	node = list -> first;
+	while (i < count && node) {
+		if (i == 3 || i == 10) { i ++; continue; }
+		assert (node -> data == data [i ++]);
+		node = node -> next;
+	}
+
+	/* Delete 0x1 */
+	deleted = delete_linklist (list, 0);
+	assert (deleted == 0x1);
+	assert (list -> count == count - 3);
+
+	node = list -> first;
+	while (i < count && node) {
+		if (i == 0 || i == 3 || i == 10) { 
+			i ++; continue; 
+		}
+		assert (node -> data == data [i ++]);
+		node = node -> next;
+	}
+
+
+	release_linklist (list, __def_free_hook);
 
 }
 

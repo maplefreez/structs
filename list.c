@@ -154,11 +154,14 @@ int find_arraylist (parraylist _list,
 
 
 /****************** Link list *******************/
-inline plistnode _new_listnode (anytype _d, plistnode _next) {
+static plistnode _new_listnode (anytype _d, plistnode _next) {
 	/* I hope the element should be numberic zero. That deems
 	 like NULL. So I donot assume the _d must be non-NULL. */
 	plistnode ret = (plistnode) malloc (sizeof (listnode));
-	if (ret) ret -> next = _next;
+	if (ret) {
+		ret -> next = _next;
+		ret -> data = _d;
+	}
 	return ret;
 }
 
@@ -184,12 +187,12 @@ plinklist create_linklist_by_arr (anytype* _arr, int _len) {
 	list = new_linklist ();
 	if (! list) return NULL;
 
-	p = _new_listnode (_arr [i ++]);
+	p = _new_listnode (_arr [i ++], NULL);
 	if (! p) goto err;
 	list -> first = p;
 
 	for (; i < _len; ++ i) {
-		p -> next = _new_listnode (_arr [i]);
+		p -> next = _new_listnode (_arr [i], NULL);
 		if (! p -> next) goto err;
 		p = p -> next;
 	}
@@ -272,10 +275,42 @@ int insert_linklist (plinklist _list,
 
 
 anytype delete_linklist (plinklist _list, int _idx) {
+	plistnode pre, p;
+	anytype res;
+	int index = 1;
 	if (! _list || _idx < 0 || _idx >= _list -> count) 
 		return NULL;
-	// TODO...
+
+	/* Because I just search for its predecessor. */
+	pre = _list -> first;
+
+	/* Delete first node. */
+	if (_idx == 0) {
+		_list -> first = pre -> next;
+		_list -> count --;
+		res = pre -> data;
+		free (pre);
+		return res;
+	}
+
+	while (pre && index < _idx) {
+		++ index;
+		pre = pre -> next;
+	}
+
+	if (! pre) return NULL;
+	p = pre -> next;
+	_list -> count --;
+
+	if (p) {
+		pre -> next = p -> next;
+		res = p -> data;
+		free (p);
+	}
+
+	return res;
 }
+
 
 int find_linklist (plinklist _list, 
 		anytype _key, cmphook _cmp) {

@@ -98,7 +98,6 @@ typedef struct _linklist {
  * Return NULL if there remains no memory. */
 extern plinklist new_linklist ();
 
-
 /* Create a linked-list by inputing anytype array.
  * $1  Array used to create list, if $1 NULL, nothing
  *      shell be done and return NULL instantly.
@@ -122,21 +121,21 @@ extern void release_linklist (plinklist, freehook);
 /* Insert an element into a separated place.
  * $1  The linked list entity.
  * $2  The element.
- * $3  The separated place to be insert, 
+ * $3  The separated place to be insert,
  *		which ranges from 0 to the value 
  *		of the current [count] of element, the 
  *		head of the list if 0, and the rear 
- *		of the list if [count]; ????? TODO...
+ *		of the list if [count];
  *
  * Return erronious 0, or successfully return 1. */
 extern int insert_linklist (plinklist, anytype, int);
+
 
 /* Delete an element with its index from a linked-list 
  * entity. 
  * $1  Linked-list to be manipulated.
  * $2  The index of removed element. It ranges from 
  *      0 to the value plus -1 of the [count] field.
- *   TODO...
  * 
  * Return the element data if successful. Or return NULL. */
 extern anytype delete_linklist (plinklist, int);
