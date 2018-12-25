@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-g -Wno-int-to-pointer-cast
+CFLAGS=-g -Wno-int-to-pointer-cast 
+CTESTFLAGS=-Wno-int-conversion -Wno-pointer-to-int-cast
 
 TESTS=t_lstring t_btree t_bstree t_stack t_sort \
 			t_list
@@ -16,22 +17,22 @@ NETM:
 
 
 t_lstring:	t_lstring.c lstring.o
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
 t_btree:	t_btree.c btree.o stack.o
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
 t_bstree: t_bstree.c btree.o bstree.o stack.o
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 	
 t_stack:	t_stack.c stack.o
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
 t_sort:	t_sort.c sort.o
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
 t_list:	t_list.c list.o
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
 
 lstring.o: lstring.c
