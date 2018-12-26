@@ -8,6 +8,7 @@
 static void t_arraylist_insert ();
 static void t_linklist_insert ();
 static void t_linklist_delete ();
+static void t_linklist_find ();
 static void t_linklist_create_by_arr ();
 static void __def_free_hook (const void*);
 
@@ -19,6 +20,7 @@ int main (int argc, char* argv []) {
 	t_arraylist_insert ();
 	t_linklist_insert ();
 	t_linklist_create_by_arr ();
+	t_linklist_find ();
 	t_linklist_delete ();
 	return 0;
 }
@@ -146,7 +148,7 @@ static void t_linklist_delete () {
 
 	/* Delete 4. */
 	deleted = delete_linklist (list, 3);
-	assert (deleted == 4);
+	assert (deleted == (anytype) 4);
 	assert (list -> count == count - 1);
 
 	node = list -> first;
@@ -158,7 +160,7 @@ static void t_linklist_delete () {
 
 	/* Delete 0xB */
 	deleted = delete_linklist (list, 9);
-	assert (deleted == 0xB);
+	assert (deleted == (anytype) 0xB);
 	assert (list -> count == count - 2);
 
 	node = list -> first;
@@ -170,7 +172,7 @@ static void t_linklist_delete () {
 
 	/* Delete 0x1 */
 	deleted = delete_linklist (list, 0);
-	assert (deleted == 0x1);
+	assert (deleted == (anytype) 0x1);
 	assert (list -> count == count - 3);
 
 	node = list -> first;
@@ -187,6 +189,42 @@ static void t_linklist_delete () {
 
 }
 
+static void t_linklist_find () {
+	int i = 0, ret;
+	anytype data [] = {
+		9, 2, 41, 8, 3, 16,
+		217, 88, 0xff, 0xA, 0xB
+	};
+	plistnode node = NULL;
+	plinklist list = NULL;
+	int count = sizeof (data) / sizeof (anytype);
+
+	/* Input list ptr is NULL. Must return -1. */
+	ret = find_linklist (list, (anytype) 9999, NULL);
+	assert (ret == -1);
+
+	list = create_linklist_by_arr (data, count);
+	assert (list);
+	assert (list -> count == count);
+
+	/* Find element 0x3. Index is 4. */
+	ret = find_linklist (list, (anytype) 0x3, NULL);
+	assert (ret == 4);
+
+	/* Find element 0xB. Index is 10. */
+	ret = find_linklist (list, (anytype) 0xB, NULL);
+	assert (ret == 10);
+
+	/* Find element 9. Index is 0. */
+	ret = find_linklist (list, (anytype) 0x9, NULL);
+	assert (ret == 0);
+
+	/* Find element 512. It's not existing.  */
+	ret = find_linklist (list, (anytype) 512, NULL);
+	assert (ret == -1);
+
+	release_linklist (list, __def_free_hook);
+}
 
 static void __def_free_hook (const void* x) 
 	{ /* Doing nothing. */ }

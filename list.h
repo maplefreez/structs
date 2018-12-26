@@ -140,6 +140,7 @@ extern int insert_linklist (plinklist, anytype, int);
  * Return the element data if successful. Or return NULL. */
 extern anytype delete_linklist (plinklist, int);
 
+// TODO testing.
 extern int find_linklist (plinklist, anytype, cmphook);
 
 

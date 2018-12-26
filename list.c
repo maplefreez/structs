@@ -327,6 +327,7 @@ int find_linklist (plinklist _list,
 		idx ++;
 		flag = _cmp (ptr -> data, _key);
 		if (flag == CMP_EQ) return idx;
+		ptr = ptr -> next;
 	}
 
 	return -1;
