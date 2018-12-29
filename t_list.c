@@ -10,6 +10,7 @@ static void t_linklist_insert ();
 static void t_linklist_delete ();
 static void t_linklist_find ();
 static void t_linklist_create_by_arr ();
+static void t_linklist_release ();
 static void __def_free_hook (const void*);
 
 
@@ -22,6 +23,7 @@ int main (int argc, char* argv []) {
 	t_linklist_create_by_arr ();
 	t_linklist_find ();
 	t_linklist_delete ();
+	t_linklist_release ();
 	return 0;
 }
 
@@ -225,6 +227,27 @@ static void t_linklist_find () {
 
 	release_linklist (list, __def_free_hook);
 }
+
+
+static void t_linklist_release () {
+	int i = 0, ret;
+	anytype data [] = {
+		9, 2, 41, 8, 3, 16,
+		217, 88, 0xff, 0xA, 0xB
+	};
+	int count = sizeof (data) / sizeof (anytype);
+
+	plinklist list = new_linklist ();
+	assert (list);
+
+	release_linklist (list, NULL);
+	release_linklist (NULL, NULL);
+
+	list = create_linklist_by_arr (data, count);
+	assert (list); assert (list -> count == count);
+	release_linklist (list, NULL);
+}
+
 
 static void __def_free_hook (const void* x) 
 	{ /* Doing nothing. */ }

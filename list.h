@@ -76,7 +76,6 @@ extern int find_arraylist (parraylist, anytype, cmphook);
 
 /* List node for linked-list implementation. */
 typedef struct _listnode listnode, *plistnode;
-
 typedef struct _listnode {
 	plistnode next;
 	anytype data;
@@ -140,7 +139,21 @@ extern int insert_linklist (plinklist, anytype, int);
  * Return the element data if successful. Or return NULL. */
 extern anytype delete_linklist (plinklist, int);
 
-// TODO testing.
+
+/* Find the first match element by key. Caller should 
+ * pass the function ptr comparing between each element
+ * and key, or the function uses default implementation,
+ * that is, comparing only through 'key == node -> data'
+ * statement.
+ * 
+ * $1  List entity ptr.
+ * $2  The key to match.
+ * $3  The comparation function ptr.
+ *
+ * Return the first match element index. Or return -1 if
+ * there is no match element. 
+ * Note: A NULL list ptr conducts to -1 
+ * returning directly. */
 extern int find_linklist (plinklist, anytype, cmphook);
 
 
