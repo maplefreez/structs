@@ -3,10 +3,10 @@ CFLAGS=-g -Wno-int-to-pointer-cast
 CTESTFLAGS=-Wno-int-conversion -Wno-pointer-to-int-cast
 
 TESTS=t_lstring t_btree t_bstree t_stack t_sort \
-			t_list
+			t_list t_queue
 
 OBJS=lstring.o btree.o bstree.o stack.o sort.o \
-		 list.o
+		 list.o queue.o
 
 all: $(OBJS) $(TESTS)
 
@@ -34,6 +34,10 @@ t_sort:	t_sort.c sort.o
 t_list:	t_list.c list.o
 	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
+t_queue:	t_queue.c queue.o
+	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
+
+
 
 lstring.o: lstring.c
 	$(CC) -c $^ $(CFLAGS)
@@ -52,6 +56,9 @@ sort.o:	sort.c
 
 
 list.o:	list.c
+	$(CC) -c $^ $(CFLAGS)
+
+queue.o:	queue.c
 	$(CC) -c $^ $(CFLAGS)
 
 clean:
