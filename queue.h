@@ -57,3 +57,4 @@ extern anytype dequeue_cqueue (pcqueue);
 extern void release_cqueue (pcqueue);
 
 #endif // ~ _QUEUE_H_
+
