@@ -11,13 +11,19 @@
 #	define __DEF_QUEUE_INIT_LEN	 16
 
 /* A simple circle queue definition whose
- * element stored in array. */
+ * element stored in array. 
+ *
+ * Status about the three variables:
+ * 1) Empty queue :  rear == head
+ * 2) The number of element in queue:
+ *     C = (rear - head + capacity) mod capacity
+ * 3) Full queue :  C == capacity; */
 typedef struct _cqueue {
 	anytype* array;
 
-	/* The rear points to the last index 
-	 * of element in queue.
-	 * The head points to the next enqueued 
+	/* The head points to the first dequeued 
+	 * element in queue.
+	 * The rear points to the next enqueued 
 	 * position in queue. 
 	 * I initially set rear and head 
 	 * to zero. */
@@ -32,7 +38,8 @@ extern pcqueue create_cqueue_by_arr (anytype*, int);
 
 /* Return 1 if the queue entity is empty. Else 
  * return 0;
- * $1  The cycle queue entity ptr. 
+ * $1  The cycle queue entity ptr. It must not
+ *      be NULL.
  *
  * Note: I use the statement below:
  *    'queue -> rear == queue -> head';
@@ -41,15 +48,18 @@ extern int isempty_cqueue (pcqueue);
 
 /* Return 1 if the queue entity is full. Else
  * return 0;
- * $1  The cycle queue entity ptr. */
+ * $1  The cycle queue entity ptr. It must not
+ *      be NULL.
+ */
 extern int isfull_cqueue (pcqueue);
 
 /* Return the number of elements in the queue 
  * entity.
- * $1  The cycle queue entity ptr.
+ * $1  The cycle queue entity ptr. It must not
+ *      be NULL.
  *
  * Note: I use the statement below to calculate:
- *    '((head - rear) + capacity) % capacity'
+ *    '((rear - head) + capacity) % capacity'
  */
 extern int count_cqueue (pcqueue);
 extern anytype enqueue_cqueue (pcqueue, anytype);

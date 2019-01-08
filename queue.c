@@ -21,9 +21,9 @@ pcqueue create_cqueue (int _n) {
 		return NULL;
 	}
 
-	/* The rear points to the last index 
-	 * of element in queue.
-	 * The head points to the next enqueued 
+	/* The head points to the first dequeued 
+	 * element in queue.
+	 * The rear points to the next enqueued 
 	 * position in queue. 
 	 * I initially set rear and head 
 	 * to zero. */
@@ -46,14 +46,25 @@ int isfull_cqueue (pcqueue _queue) {
 
 
 int count_cqueue (pcqueue _queue) {
-	int count = (_queue -> head - _queue -> rear
+	int count = (_queue -> rear - _queue -> head 
 			+ _queue -> capacity) % _queue -> capacity;
 	return count;
 }
 
 
 anytype enqueue_cqueue (pcqueue _queue, anytype _e) {
-	// TODO...
+	if (! _queue) return NULL;
+
+	/* I hope its memory should be 
+		 reallocated this time instead 
+	   of directly returning NULL. */
+	if (count_cqueue (_queue) + 1 >= 
+			_queue -> capacity) return NULL;
+	// if ((_queue -> rear + 1) % _queue -> capacity
+	// 			== _queue -> head) return NULL;
+
+	_queue [_queue -> rear ++] = _e;
+	return _e;
 }
 
 
