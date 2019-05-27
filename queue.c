@@ -57,18 +57,24 @@ anytype enqueue_cqueue (pcqueue _queue, anytype _e) {
 
 	/* I hope its memory should be 
 		 reallocated this time instead 
-	   of directly returning NULL. */
+	   of directly returning NULL when
+	   there is no remaining space. */
 	if (count_cqueue (_queue) + 1 >= 
 			_queue -> capacity) return NULL;
 	// if ((_queue -> rear + 1) % _queue -> capacity
 	// 			== _queue -> head) return NULL;
 
-	_queue [_queue -> rear ++] = _e;
+	_queue -> array [_queue -> rear ++] = _e;
 	return _e;
 }
 
 
-extern anytype dequeue_cqueue (pcqueue);
+anytype dequeue_cqueue (pcqueue _queue) {
+	if (! _queue) return NULL;
+
+	return isempty_cqueue (_queue) ? NULL :
+		(_queue -> array [_queue -> head --]);
+}
 
 
 void release_cqueue (pcqueue _queue) {

@@ -10,6 +10,7 @@ static void t_linklist_insert ();
 static void t_cqueue_isempty ();
 static void t_cqueue_isfull ();
 static void t_cqueue_count ();
+static void t_cqueue_enqueue ();
 
 
 /* Main test entry. */
@@ -18,6 +19,7 @@ int main (int argc, char* argv []) {
 	t_cqueue_isempty ();
 	t_cqueue_isfull ();
 	t_cqueue_count ();
+	t_cqueue_enqueue ();
 	return 0;
 }
 
@@ -62,5 +64,18 @@ static void t_cqueue_count () {
 	// TODO...
 }
 
+
+static void t_cqueue_enqueue () {
+	{ // 0x1
+		pcqueue queue = new_cqueue ();
+		assert (queue);
+
+		anytype ret = enqueue_cqueue (queue, (anytype) 323);
+		assert (ret == (anytype*) 323);
+
+		assert (queue -> head == 0);
+		assert (queue -> rear == 1);
+	}
+}
 
 

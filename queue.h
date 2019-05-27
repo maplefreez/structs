@@ -63,6 +63,11 @@ extern int isfull_cqueue (pcqueue);
  */
 extern int count_cqueue (pcqueue);
 extern anytype enqueue_cqueue (pcqueue, anytype);
+
+/* Return the element at the header of queue.
+ * $1  The cycle queue entity ptr. If the function
+ *      get a NULL ptr, it directly returns NULL.
+ */
 extern anytype dequeue_cqueue (pcqueue);
 extern void release_cqueue (pcqueue);
 
