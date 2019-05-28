@@ -75,6 +75,43 @@ static void t_cqueue_enqueue () {
 
 		assert (queue -> head == 0);
 		assert (queue -> rear == 1);
+		release_cqueue (queue);
+	}
+
+	{ // 0x2
+		int x, y; anytype ret = NULL;
+		pcqueue queue = new_cqueue ();
+		assert (queue);
+#	define _a_func_for_the_test_(___X)  ((___X)<<1 + 6)
+		
+		for (x ^=x; x < 15; ++ x) {
+			y = _a_func_for_the_test_(x);
+			ret = enqueue_cqueue (queue, (anytype) y);
+			assert (ret == (anytype*) y);
+			assert (queue -> head == 0);
+			assert (queue -> rear == (x + 1));
+		}
+
+		/* Enqueue the 16th element. */
+		y = _a_func_for_the_test_(x);
+		ret = enqueue_cqueue (queue, (anytype) y);
+		// assert (ret == (anytype*) y);
+		assert (ret == NULL);
+
+		assert (queue -> head == 0);
+		assert (queue -> rear == 15);
+
+		/* Doing nothing. */
+		for (x ^= x; x < 1024; ++ x) {
+			y = _a_func_for_the_test_ (x);
+			assert (enqueue_cqueue (queue, (anytype) y) 
+					== NULL);
+			assert (queue -> head == 0);
+			assert (queue -> rear == 15);
+		}
+
+#undef _a_func_for_the_test_
+		release_cqueue (queue);
 	}
 }
 

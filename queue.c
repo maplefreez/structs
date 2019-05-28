@@ -53,27 +53,36 @@ int count_cqueue (pcqueue _queue) {
 
 
 anytype enqueue_cqueue (pcqueue _queue, anytype _e) {
-	if (! _queue) return NULL;
-
 	/* I hope its memory should be 
 		 reallocated this time instead 
 	   of directly returning NULL when
 	   there is no remaining space. */
-	if (count_cqueue (_queue) + 1 >= 
+	if (! _queue || count_cqueue (_queue) + 1 >= 
 			_queue -> capacity) return NULL;
 	// if ((_queue -> rear + 1) % _queue -> capacity
 	// 			== _queue -> head) return NULL;
 
-	_queue -> array [_queue -> rear ++] = _e;
+	_queue -> array [_queue -> rear] = _e;
+	/* Update rear pointer to next 
+		 inserting position. */
+	_queue -> rear = (_queue -> rear + 1) 
+		% (_queue -> capacity);
 	return _e;
 }
 
-
+// TODO TESTING... 
 anytype dequeue_cqueue (pcqueue _queue) {
-	if (! _queue) return NULL;
+	if (_queue && ! isempty_cqueue (_queue)) {
+		anytype e = _queue -> array [_queue -> head];
 
-	return isempty_cqueue (_queue) ? NULL :
-		(_queue -> array [_queue -> head --]);
+		/* Update head pointer to next 
+		 dequeueing position. */
+		_queue -> head = (_queue -> head + 1) 
+			% (_queue -> capacity);
+		return e;
+	}
+
+	return NULL;
 }
 
 
