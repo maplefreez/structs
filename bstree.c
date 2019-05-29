@@ -84,7 +84,7 @@ pbstnode bst_search (pbstree _t,
 	return NULL;
 }
 
-
+// TODO... testing
 pbstree bst_create_int_array (int* _arr, size_t _num) {
 	int i = 0;
 	pbstree t = NULL;

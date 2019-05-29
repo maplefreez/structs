@@ -10,13 +10,16 @@ static void t_bst_insert ();
 static void t_bst_search ();
 static void t_bst_delete ();
 static void t_bst_getmax ();
+static void t_bst_getmin ();
 static void t_bst_visit_func (pbstnode);
 static int _cmp_integer (void*, void*);
 
 int main (int argc, char* argv []) {
-	// t_bst_insert ();
-	// t_bst_search ();
+	t_bst_insert ();
+	t_bst_search ();
 	t_bst_delete ();
+	t_bst_getmax ();
+	t_bst_getmin ();
 	return 0;
 }
 
@@ -104,23 +107,48 @@ static void t_bst_delete () {
 
 
 static void t_bst_getmax () {
-	int i = 0, num = 0;
-	int array [] = { 
-		32, 43, 92, 1, 
-		31, 8, 12, 500, 
-		2, 4 
-	};
+	{
+		int num = 0;
+		int array [] = { 
+			32, 43, 92, 1, 
+			31, 8, 12, 500, 
+			2, 4 
+		};
 
-	pbstree tree = NULL;
-	pbstnode node = NULL;
-	num = sizeof (array) / sizeof (int);
+		pbstree tree = NULL;
+		pbstnode node = NULL;
+		num = sizeof (array) / sizeof (int);
 
-	tree = bst_create_int_array (array, num);
-	assert (tree != NULL);
-	
+		tree = bst_create_int_array (array, num);
+		assert (tree != NULL);
 
+		node = bst_getmax (tree);
+		assert (node -> data == (anytype) 500);
+		bst_release (tree, NULL);
+	}
 }
 
+static void t_bst_getmin () {
+	{
+		int num = 0;
+		int array [] = { 
+			92, 1, 31, 8, 12, 500, 
+			2, 4, 99, 324, 7823, 
+			1234, 0x32, 55, 12, 9 
+		};
+
+		pbstree tree = NULL;
+		pbstnode node = NULL;
+		num = sizeof (array) / sizeof (int);
+
+		tree = bst_create_int_array (array, num);
+		assert (tree != NULL);
+
+		node = bst_getmin (tree);
+		assert (node -> data == (anytype) 1);
+		bst_release (tree, NULL);
+	}
+}
 
 static void t_bst_search () {
 	int i = 0, num = 0;;
@@ -139,7 +167,7 @@ static void t_bst_search () {
 
 	node = bst_search (tree, (void*) 500, _cmp_integer);
 	assert (node != NULL);
-	assert ((node -> data) == 500);
+	assert ((node -> data) == (anytype) 500);
 
 	bst_release (tree, NULL);
 }
