@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #include "btree.h"
 #include "stack.h"
@@ -196,6 +197,19 @@ pbtree _bt_create_post_inorder (
 		char* _inend) {
 	// TODO...
 	return NULL;
+}
+
+
+bool bt_is_bst (pbtree _t, bt_cmpf _func) {
+	static void* lastval;
+	if (_t) {
+		if (! bs_is_bst (_t -> left)) 
+			return false;
+		lastval = _t -> data;
+		// TODO...
+	}
+
+	return false;
 }
 
 static void _bt_inordertraversal (pbtree _t, bt_visitf _func) {

@@ -45,18 +45,23 @@ void bst_pretraversal (pbstree _t, bst_visitf _func) {
 
 
 // TODO test
-void* bst_getmax (pbstree _t) {
-	if (! _t) return NULL;
-	while (_t) _t = _t -> right;
-	return _t -> data;
+pbstnode bst_getmax (pbstree _t) {
+	pbstnode p = (pbstnode) _t;
+	if (! p) return NULL;
+
+	while (p -> right) 
+		p = p -> right;
+	return p;
 }
 
 
 // TODO test
-void* bst_getmin (pbstree _t) {
-	if (! _t) return NULL;
-	while (_t) _t = _t -> left;
-	return _t -> data;
+pbstnode bst_getmin (pbstree _t) {
+	pbstnode p = (pbstnode) _t;
+	if (! p) return NULL;
+
+	while (p -> left) p = p -> left;
+	return p;
 }
 
 
@@ -156,7 +161,6 @@ static pbstnode _bst_delete_node (pbstree node, bst_freef _freef) {
 
 	return ret;
 }
-
 
 static int _default_cmp_func (void* _a, void* _b) {
 	if (_a == _b) return CMP_EQ;

@@ -18,6 +18,8 @@
 
 #	define INIT_STACK_LEN    0x8
 
+#include <stdbool.h>
+
 typedef struct _btree btree, btnode, 
 				*pbtree, *pbtnode;
 
@@ -42,6 +44,9 @@ typedef void (*bt_visitf) (pbtnode);
 /* A function signature for releasing
  * each data field on node. */
 typedef void (*bt_freef) (pbtnode);
+
+/* A function signature for comparation. */
+typedef int (*bt_cmpf) (const anytype, const anytype);
 
 
 /* Create a new tree by inputing data list
@@ -129,6 +134,12 @@ extern void bt_leveltraversal (pbtree, bt_visitf);
  * Note: If we special NULL to $2, nothing will be done
  * on data field, traveling each node. */
 extern void bt_release (pbtree, bt_freef);
+
+
+/* Judge whether the specified tree is a BST. 
+ * We treat a NULL as a non-BST. The algorighm
+ * is based on the inorder traversal. */
+extern bool bt_is_bst (pbtree, bt_cmpf);
 
 
 #endif // ~ _BTREE_H_

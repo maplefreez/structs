@@ -55,16 +55,16 @@ extern void bst_release (pbstree, bst_freef);
 extern void bst_pretraversal (pbstree, bst_visitf);
 
 
-/* Get the maximum key value from a BST. 
- * Return the data domain. If input $1 is NULL,
+/* Get the maximum node from a BST. 
+ * Return the node ptr. If input $1 is NULL,
  * return NULL. */
-extern void* bst_getmax (pbstree);
+extern pbstnode bst_getmax (pbstree);
 
 
-/* Get the minimum key value from a BST. 
- * Return the data domain. If input $1 is NULL,
+/* Get the minimum node from a BST. 
+ * Return the node ptr. If input $1 is NULL,
  * return NULL. */
-extern void* bst_getmin (pbstree);
+extern pbstnode bst_getmin (pbstree);
 
 
 /* Search a special element from a separated 
