@@ -19,6 +19,7 @@
 #	define INIT_STACK_LEN    0x8
 
 #include <stdbool.h>
+#include "common.h"
 
 typedef struct _btree btree, btnode, 
 				*pbtree, *pbtnode;

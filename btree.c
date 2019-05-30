@@ -203,7 +203,7 @@ pbtree _bt_create_post_inorder (
 bool bt_is_bst (pbtree _t, bt_cmpf _func) {
 	static void* lastval;
 	if (_t) {
-		if (! bs_is_bst (_t -> left)) 
+		if (! bt_is_bst (_t -> left, _func)) 
 			return false;
 		lastval = _t -> data;
 		// TODO...
