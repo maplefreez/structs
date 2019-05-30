@@ -51,8 +51,17 @@ extern void bst_release (pbstree, bst_freef);
 
 
 /* Preordering traverse each node of a binary-search-
- * tree by calls bt_pretraversal. */
+ * tree by calling bt_pretraversal. */
 extern void bst_pretraversal (pbstree, bst_visitf);
+
+
+/* inordering traverse each node of a binary-search-
+ * tree by calling bt_inordertraversal. */
+extern void bst_inordertraversal (pbstree, bst_visitf);
+
+/* post order traverse each node of a binary-search-
+ * tree by calling bt_pretraversal. */
+extern void bst_posttraversal (pbstree, bst_visitf);
 
 
 /* Get the maximum node from a BST. 

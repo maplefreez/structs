@@ -11,6 +11,7 @@ static void t_bst_search ();
 static void t_bst_delete ();
 static void t_bst_getmax ();
 static void t_bst_getmin ();
+static void t_bst_create_int_array ();
 static void t_bst_visit_func (pbstnode);
 static int _cmp_integer (void*, void*);
 
@@ -20,6 +21,7 @@ int main (int argc, char* argv []) {
 	t_bst_delete ();
 	t_bst_getmax ();
 	t_bst_getmin ();
+	t_bst_create_int_array ();
 	return 0;
 }
 
@@ -149,6 +151,60 @@ static void t_bst_getmin () {
 		bst_release (tree, NULL);
 	}
 }
+
+
+static void t_bst_create_int_array () {
+	{ // 0x01
+		pbstree tree = bst_create_int_array (NULL, 0x400);
+		int array [] = {0x1, 0x2, 0x3};
+		assert (tree == NULL);
+
+		tree = bst_create_int_array (array, 0);
+		assert (tree == NULL);
+
+		tree = bst_create_int_array (NULL, 0);
+		assert (tree == NULL);
+	}
+
+	{ // 0x02
+		int array [] = {
+			100, 20, 30, 12, 193, 7, 92, 
+			0, 72, 8, 1, 32, 81, 73, 732,
+			1122, 7832, 0x400, 102, 35
+		};
+
+		int inorder [] = {
+			0, 1, 7, 8, 12, 20, 30, 32, 35, 
+			72, 73, 81, 92, 100, 102, 193, 
+			732, 1024, 1122, 7832
+		};
+
+		int preorder [] = {
+			100, 20, 12, 7, 0, 1, 8, 30, 92,
+			72, 32, 35, 81, 73, 193, 102, 
+			732, 1122, 1024, 7832
+		};
+
+		int postorder [] = {
+			1, 0, 8, 7, 12, 35, 32, 73, 81, 
+			72, 92, 30, 20, 102, 1024, 7832, 
+			1122, 732, 193, 100
+		};
+
+		size_t len = sizeof (array) / sizeof (int);
+		pbstree tree = bst_create_int_array (array, len);
+		assert (tree != NULL);
+
+		puts ("\n------------------------");
+		bst_pretraversal (tree, t_bst_visit_func);
+		puts ("\n------------------------");
+		bst_posttraversal (tree, t_bst_visit_func);
+
+		bst_release (tree, NULL);
+	}
+
+}
+
 
 static void t_bst_search () {
 	int i = 0, num = 0;;

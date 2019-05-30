@@ -12,7 +12,10 @@ static void _default_free_func (pbtnode _node) {}
 pbstree bst_insert (pbstree _t, void* _data, bst_cmpf _func) {
 	pbstree tree = _t;
 	int cmp_code = -2;
-	if (! _data) return NULL;
+	/* If data stores an integer and it's even 0, 
+	   the pointer will be treated as NULL. So 
+	   I'd better commen this line. */
+	// if (! _data) return NULL;
 
 	/* Create a new tree. */
 	if (! tree) {
@@ -44,7 +47,16 @@ void bst_pretraversal (pbstree _t, bst_visitf _func) {
 }
 
 
-// TODO test
+void bst_inordertraversal (pbstree _t, bst_visitf _func) {
+	bt_inordertraversal ((pbtree) _t, (bt_visitf) _func);
+}
+
+
+void bst_posttraversal (pbstree _t, bst_visitf _func) {
+	bt_posttraversal ((pbtree) _t, (bt_visitf) _func);
+}
+
+
 pbstnode bst_getmax (pbstree _t) {
 	pbstnode p = (pbstnode) _t;
 	if (! p) return NULL;
@@ -55,7 +67,6 @@ pbstnode bst_getmax (pbstree _t) {
 }
 
 
-// TODO test
 pbstnode bst_getmin (pbstree _t) {
 	pbstnode p = (pbstnode) _t;
 	if (! p) return NULL;
