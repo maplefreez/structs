@@ -31,14 +31,18 @@ static pbtree _bt_create_post_inorder (char**, char*, char*);
 
 pbtnode bt_create_node (void* _data) {
 	pbtree ret = NULL;
-	if (_data) {
-		ret = (pbtnode) malloc (sizeof (btnode));
-		if (! ret) return NULL;
 
-		/* Initialize fields. */
-		ret -> left = ret -> right = NULL;
-		ret -> data = _data;
-	}
+	/* If data stores an integer and it's even 0, 
+	   the pointer will be treated as NULL. So 
+	   I'd better commen this line. */
+	// if (_data) {
+	ret = (pbtnode) malloc (sizeof (btnode));
+	if (! ret) return NULL;
+
+	/* Initialize fields. */
+	ret -> left = ret -> right = NULL;
+	ret -> data = _data;
+	// }
 	return ret;
 }
 

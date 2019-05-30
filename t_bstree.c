@@ -173,11 +173,6 @@ static void t_bst_create_int_array () {
 			1122, 7832, 0x400, 102, 35
 		};
 
-		int inorder [] = {
-			0, 1, 7, 8, 12, 20, 30, 32, 35, 
-			72, 73, 81, 92, 100, 102, 193, 
-			732, 1024, 1122, 7832
-		};
 
 		int preorder [] = {
 			100, 20, 12, 7, 0, 1, 8, 30, 92,
@@ -195,10 +190,14 @@ static void t_bst_create_int_array () {
 		pbstree tree = bst_create_int_array (array, len);
 		assert (tree != NULL);
 
-		puts ("\n------------------------");
-		bst_pretraversal (tree, t_bst_visit_func);
-		puts ("\n------------------------");
-		bst_posttraversal (tree, t_bst_visit_func);
+		/* Because of the pool visit function for traversal,
+		   I have no idea as to how the testing could go on. */
+		// puts ("\n---------------------------------");
+		// bst_inordertraversal (tree, t_bst_visit_func);
+		// puts ("---------------------------------");
+		// bst_posttraversal (tree, t_bst_visit_func);
+		// puts ("---------------------------------");
+		// bst_pretraversal (tree, t_bst_visit_func);
 
 		bst_release (tree, NULL);
 	}
