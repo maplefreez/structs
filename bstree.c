@@ -87,11 +87,21 @@ pbstnode bst_search (pbstree _t,
 // TODO... testing
 pbstree bst_create_int_array (int* _arr, size_t _num) {
 	int i = 0;
-	pbstree t = NULL;
+	pbstree t = NULL, root = NULL;
 	if (_num == 0 || ! _arr) return NULL;
 
-	for (; i < _num; ++ i)
-		t = bst_insert (t, (void*) (_arr [i]), _cmp_integer);
+	/* If there exists one node failing to be created, 
+		 the creation process must be stopped. So I use 
+		 the variable to store its root, in order to calling
+		 release function. */
+	t = root = bst_insert (t, (anytype) (_arr [i ++]), _cmp_integer);
+	for (; i < _num; ++ i) {
+		t = bst_insert (t, (anytype) (_arr [i]), _cmp_integer);
+		if (! t) break;
+	}
+
+	if (! t) bst_release (root, NULL);
+
 	return t;
 }
 
