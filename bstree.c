@@ -77,7 +77,7 @@ pbstnode bst_getmin (pbstree _t) {
 
 
 pbstnode bst_search (pbstree _t, 
-		void* _e, bst_cmpf _func) {
+		anytype _e, bst_cmpf _func) {
 	pbstnode ptr = _t;
 	if (! _func) _func = _default_cmp_func;
 
@@ -95,7 +95,7 @@ pbstnode bst_search (pbstree _t,
 	return NULL;
 }
 
-// TODO... testing
+
 pbstree bst_create_int_array (int* _arr, size_t _num) {
 	int i = 0;
 	pbstree t = NULL, root = NULL;
