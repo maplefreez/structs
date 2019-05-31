@@ -28,6 +28,7 @@ pcqueue create_cqueue (int _n) {
 	 * I initially set rear and head 
 	 * to zero. */
 	ret -> rear = 0; ret -> head = 0;
+
 	ret -> capacity = __DEF_QUEUE_INIT_LEN;
 	return ret;
 }
@@ -41,7 +42,7 @@ int isempty_cqueue (pcqueue _queue) {
 
 
 int isfull_cqueue (pcqueue _queue) {
-	return count_cqueue (_queue) == _queue -> capacity;
+	return count_cqueue (_queue) == (_queue -> capacity - 1);
 }
 
 

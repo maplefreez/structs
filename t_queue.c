@@ -45,13 +45,33 @@ static void t_cqueue_isempty () {
 }
 
 static void t_cqueue_isfull () {
-	int res = 0;
-	pcqueue queue = new_cqueue ();
-	assert (queue);
+	{ // 0x01
+		int res = 0;
+		pcqueue queue = new_cqueue ();
+		assert (queue);
 
-	res = isfull_cqueue (queue);
-	assert (res == 0);
-	// TODO...
+		res = isfull_cqueue (queue);
+		assert (res == 0);
+		release_cqueue (queue);
+	}
+
+	{
+		int x = 1; int count; 
+		pcqueue q = new_cqueue ();
+		assert (q);
+
+		for (; x <= 14; ++ x) {
+			assert (enqueue_cqueue (q, (anytype) x));
+			assert (! isfull_cqueue (q));
+		}
+
+		count = count_cqueue (q);
+		assert (enqueue_cqueue (q, (anytype) x));
+		assert (isfull_cqueue (q));
+
+		release_cqueue (q);
+	}
+
 }
 
 static void t_cqueue_count () {

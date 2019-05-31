@@ -28,6 +28,11 @@ typedef struct _cqueue {
 	 * I initially set rear and head 
 	 * to zero. */
 	int rear; int head;
+
+	/* Note: Cause an extra space, that is 
+		 pointed to by the rear is used to 
+		 flag the state of full, the actual 
+		 available space loses it. */
 	int capacity;
 } cqueue, *pcqueue;
 
@@ -62,6 +67,8 @@ extern int isfull_cqueue (pcqueue);
  *    '((rear - head) + capacity) % capacity'
  */
 extern int count_cqueue (pcqueue);
+
+
 extern anytype enqueue_cqueue (pcqueue, anytype);
 
 /* Return the element at the header of queue.
@@ -69,6 +76,8 @@ extern anytype enqueue_cqueue (pcqueue, anytype);
  *      get a NULL ptr, it directly returns NULL.
  */
 extern anytype dequeue_cqueue (pcqueue);
+
+
 extern void release_cqueue (pcqueue);
 
 #endif // ~ _QUEUE_H_
