@@ -1,5 +1,10 @@
 #include "queue.h"
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+
+static bool _extend_space_cqueue (pcqueue);
 
 
 /* Create a new cycle queue entity with preallocated
@@ -59,7 +64,8 @@ anytype enqueue_cqueue (pcqueue _queue, anytype _e) {
 	   of directly returning NULL when
 	   there is no remaining space. */
 	if (! _queue || count_cqueue (_queue) + 1 >= 
-			_queue -> capacity) return NULL;
+			_queue -> capacity)
+		if (! _extend_space_cqueue (_queue)) return NULL;
 	// if ((_queue -> rear + 1) % _queue -> capacity
 	// 			== _queue -> head) return NULL;
 
@@ -92,5 +98,43 @@ void release_cqueue (pcqueue _queue) {
 	free (_queue -> array);
 	free (_queue);
 }
+
+
+// TODO  Testing.
+static bool _extend_space_cqueue (pcqueue _q) {
+	size_t newlen = 0, oldlen;
+	int count;
+
+	if (_q) {
+		count = count_cqueue (_q);
+		oldlen = _q -> capacity;
+		newlen = oldlen << 1;
+		if (newlen > __MAX_QUEUE_LEN) return false;
+
+		_q -> array = realloc (_q -> array, newlen);
+
+		/* Head < Rear. */
+		if (_q -> head < _q -> rear && _q -> head) {
+			memmove (_q -> array, 
+					_q -> array + _q -> head, count);
+		} else {
+			/* Head > Rear. Firstly, move the serials of 
+				 elements indexed [0, rear - 1] into new space, 
+				 which join behind the elements indexed 
+				 [head, capacity - 1]. Then move all the elements
+			   towards array[0]. */
+			memmove (_q -> array + oldlen, 
+					_q -> array, _q -> rear);
+			memmove (_q -> array, 
+					_q -> array + _q -> head, count);
+		}
+
+		_q -> head = 0, _q -> rear = count;
+		return true;
+	}
+
+	return false;
+}
+
 
 

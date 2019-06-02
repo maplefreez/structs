@@ -9,6 +9,7 @@
 #include "common.h"
 
 #	define __DEF_QUEUE_INIT_LEN	 16
+#	define __MAX_QUEUE_LEN			 1024
 
 /* A simple circle queue definition whose
  * element stored in array. 
