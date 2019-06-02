@@ -193,23 +193,41 @@ static void t_cqueue_enqueue () {
 			assert (queue -> rear == (x + 1));
 		}
 
-		/* Enqueue the 16th element. */
+		/* Enqueue the 16th element. This might
+		   trigger memory auto-extending. */
 		y = _a_func_for_the_test_(x);
 		ret = enqueue_cqueue (queue, (anytype) y);
-		// assert (ret == (anytype*) y);
-		assert (ret == NULL);
+		assert (ret == (anytype*) y);
 
 		assert (queue -> head == 0);
-		assert (queue -> rear == 15);
+		assert (queue -> rear == 16);
 
 		/* Doing nothing. */
-		for (x ^= x; x < 1024; ++ x) {
+		clean_cqueue (queue);
+		for (x ^= x; x < 1023; ++ x) {
 			y = _a_func_for_the_test_ (x);
 			assert (enqueue_cqueue (queue, (anytype) y) 
-					== NULL);
+					== (anytype) y);
 			assert (queue -> head == 0);
-			assert (queue -> rear == 15);
+			assert (queue -> rear == x + 1);
+			assert (x + 1 == count_cqueue (queue));
 		}
+
+		/* Enqueue the 1024th element. */
+		assert (! enqueue_cqueue (queue, 
+					(anytype) _a_func_for_the_test_ (x)));
+		assert (isfull_cqueue (queue));
+
+		/* Dequeue each element. */
+		for (x ^= x; x < 1023; ++ x) {
+			anytype y = dequeue_cqueue (queue);
+			assert (y == (anytype) _a_func_for_the_test_ (x));
+			assert (count_cqueue (queue) == 1022 - x);
+			assert (queue -> head == x + 1);
+			assert (queue -> rear == 1023);
+		}
+
+		assert (isempty_cqueue (queue));
 
 #undef _a_func_for_the_test_
 		release_cqueue (queue);

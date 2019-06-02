@@ -58,6 +58,13 @@ int count_cqueue (pcqueue _queue) {
 }
 
 
+void clean_cqueue (pcqueue _q) {
+	if (_q) {
+		_q -> head = _q -> rear = 0;
+	}
+}
+
+
 anytype enqueue_cqueue (pcqueue _queue, anytype _e) {
 	/* I hope its memory should be 
 		 reallocated this time instead 
@@ -99,8 +106,7 @@ void release_cqueue (pcqueue _queue) {
 	free (_queue);
 }
 
-
-// TODO  Testing.
+/* Only the Enqueue function calls it. */
 static bool _extend_space_cqueue (pcqueue _q) {
 	size_t newlen = 0, oldlen;
 	int count;
@@ -109,14 +115,19 @@ static bool _extend_space_cqueue (pcqueue _q) {
 		count = count_cqueue (_q);
 		oldlen = _q -> capacity;
 		newlen = oldlen << 1;
+		
+		/* I defined a maximum length for an queue that
+		   extended. A queue entity can hold almost 1023
+		   elements after times of extensions. */
 		if (newlen > __MAX_QUEUE_LEN) return false;
 
-		_q -> array = realloc (_q -> array, newlen);
+		_q -> array = realloc (_q -> array, newlen * sizeof (anytype));
 
 		/* Head < Rear. */
-		if (_q -> head < _q -> rear && _q -> head) {
-			memmove (_q -> array, 
-					_q -> array + _q -> head, count);
+		if (_q -> head < _q -> rear) {
+			if (_q -> head)
+				memmove (_q -> array, 
+					_q -> array + _q -> head, count * sizeof (anytype));
 		} else {
 			/* Head > Rear. Firstly, move the serials of 
 				 elements indexed [0, rear - 1] into new space, 
@@ -124,12 +135,13 @@ static bool _extend_space_cqueue (pcqueue _q) {
 				 [head, capacity - 1]. Then move all the elements
 			   towards array[0]. */
 			memmove (_q -> array + oldlen, 
-					_q -> array, _q -> rear);
+					_q -> array, _q -> rear * sizeof (anytype));
 			memmove (_q -> array, 
-					_q -> array + _q -> head, count);
+					_q -> array + _q -> head, count * sizeof (anytype));
 		}
 
 		_q -> head = 0, _q -> rear = count;
+		_q -> capacity = newlen;
 		return true;
 	}
 

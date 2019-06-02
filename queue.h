@@ -42,6 +42,14 @@ extern pcqueue new_cqueue ();
 extern pcqueue create_cqueue (int);
 extern pcqueue create_cqueue_by_arr (anytype*, int);
 
+/* Clean all the elements in a special cycle 
+ * queue entity. If $1 is NULL, nothing will
+ * be done. 
+ * Note: the function donot call free() for 
+ *   its memory allocated to elements. It
+ *   just changes the head and rear. */
+extern void clean_cqueue (pcqueue);
+
 /* Return 1 if the queue entity is empty. Else 
  * return 0;
  * $1  The cycle queue entity ptr. It must not
