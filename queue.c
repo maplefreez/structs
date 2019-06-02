@@ -17,6 +17,8 @@ pcqueue new_cqueue () {
 
 pcqueue create_cqueue (int _n) {
 	pcqueue ret = NULL;
+	if (_n > __MAX_QUEUE_LEN) return NULL;
+
 	ret = (pcqueue) malloc (sizeof (cqueue));
 	if (! ret) return ret;
 
@@ -34,11 +36,27 @@ pcqueue create_cqueue (int _n) {
 	 * to zero. */
 	ret -> rear = 0; ret -> head = 0;
 
-	ret -> capacity = __DEF_QUEUE_INIT_LEN;
+	ret -> capacity = _n;
 	return ret;
 }
 	
-extern pcqueue create_cqueue_by_arr (anytype*, int);
+
+pcqueue create_cqueue_by_arr (anytype* _arr, int _n) {
+	int i = 0; pcqueue q;
+
+	if (! _arr || _n <= 0)
+		return NULL;
+
+	/* Note a queue, length of n, is able to 
+		 hold (n-1) elements. */
+	if (! (q = create_cqueue (_n + 1)))
+		return NULL;
+
+	while (i < _n)
+		enqueue_cqueue (q, (anytype) _arr [i ++]);
+
+	return q;
+}
 
 
 int isempty_cqueue (pcqueue _queue) {

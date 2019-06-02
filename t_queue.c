@@ -13,6 +13,7 @@ static void t_cqueue_isfull ();
 static void t_cqueue_count ();
 static void t_cqueue_enqueue ();
 static void t_cqueue_dequeue ();
+static void t_cqueue_create_by_arr ();
 
 
 /* Main test entry. */
@@ -23,6 +24,7 @@ int main (int argc, char* argv []) {
 	t_cqueue_count ();
 	t_cqueue_isempty ();
 	t_cqueue_isfull ();
+	t_cqueue_create_by_arr ();
 	return 0;
 }
 
@@ -310,6 +312,58 @@ static void t_cqueue_dequeue () {
 		release_cqueue (q);
 	}
 
+
+}
+
+static void t_cqueue_create_by_arr () {
+	{ // 0x01
+		anytype array [1024] = {0, };
+		assert (! create_cqueue_by_arr (array, 1024));
+		assert (! create_cqueue_by_arr (NULL, 512));
+		assert (! create_cqueue_by_arr (NULL, 0));
+		assert (! create_cqueue_by_arr (NULL, -128));
+		assert (! create_cqueue_by_arr (array, -513));
+	}
+
+	{ // 0x02
+		int i; pcqueue q = NULL;
+		anytype array [__MAX_QUEUE_LEN] = {0, };
+
+		/* Initialize array. */
+		for (i = 0; i < __MAX_QUEUE_LEN - 1; ++ i)
+			array [i] = i + 1;
+
+		/* A cycle queue with (__MAX_QUEUE_LEN - 1) elements. */
+		q = create_cqueue_by_arr (array, __MAX_QUEUE_LEN - 1);
+		assert (q); assert (isfull_cqueue (q));
+		assert (q -> capacity == __MAX_QUEUE_LEN);
+		assert (q -> head == 0); 
+		assert (q -> rear == __MAX_QUEUE_LEN - 1);
+
+		/* Dequeue each element. */
+		for (i = 0; i < __MAX_QUEUE_LEN - 1; ++ i)
+			assert (array [i] == dequeue_cqueue (q));
+
+		assert (isempty_cqueue (q));
+		release_cqueue (q);
+	}
+
+	{ // 0x03
+		int i; pcqueue q = NULL;
+		anytype array [__MAX_QUEUE_LEN] = {0, };
+
+		/* Initialize the input array. */
+		for (i = 0; i < __MAX_QUEUE_LEN - 1; ++ i)
+			array [i] = i + 1;
+
+		q = create_cqueue_by_arr (array, __MAX_QUEUE_LEN - 1);
+		assert (q); 
+		assert (q -> capacity == __MAX_QUEUE_LEN);
+		assert (q -> head == 0); 
+		assert (q -> rear == __MAX_QUEUE_LEN - 1);
+
+		release_cqueue (q);
+	}
 
 }
 
