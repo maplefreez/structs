@@ -5,6 +5,7 @@
 
 #include "btree.h"
 #include "stack.h"
+#include "queue.h"
 
 
 static void _default_visit_func (pbtnode);
@@ -108,26 +109,26 @@ void bt_inordertraversal (pbtree _t, bt_visitf _func) {
 }
 
 
+// TODO Testing.
 void bt_leveltraversal (pbtree _t, bt_visitf _func) {
-	/* TODO Sorry for no queue structure available. */
-	// pqueue q;
-	// pbtnode ptr;
-	// 
-	// if (_t) {
-	// 	if (! _func) _func = _default_visit_func;
-	// 	q = queue_create ();
-	// 	ptr = (pbtnode) _t;
-	// 	queue_enqueue (q, ptr);
+	pcqueue q;
+	pbtnode ptr;
 
-	// 	/* Start traversing. */
-	// 	while (! queue_isempty (q)) {
-	// 		pbtnode x = (pbtnode) queue_dequeue (q);
-	// 		_func (x);
-	// 		if (x -> left) queue_enqueue (q, x -> left);
-	// 		if (x -> right) queue_enqueue (q, x -> right);
-	// 	}
-	// 	
-	// }
+	if (_t) {
+		if (! _func) _func = _default_visit_func;
+		q = new_cqueue ();
+		ptr = (pbtnode) _t;
+		enqueue_cqueue (q, ptr);
+
+		/* Start traversing. */
+		while (! isempty_cqueue (q)) {
+			pbtnode x = (pbtnode) dequeue_cqueue (q);
+			_func (x);
+			if (x -> left) enqueue_cqueue (q, x -> left);
+			if (x -> right) enqueue_cqueue (q, x -> right);
+		}
+		
+	}
 }
 
 void bt_release (pbtree _t, bt_freef _func) {

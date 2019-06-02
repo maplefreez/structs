@@ -19,10 +19,10 @@ NETM:
 t_lstring:	t_lstring.c lstring.o
 	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
-t_btree:	t_btree.c btree.o stack.o
+t_btree:	t_btree.c btree.o stack.o queue.o
 	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
-t_bstree: t_bstree.c btree.o bstree.o stack.o
+t_bstree: t_bstree.c btree.o bstree.o stack.o queue.o
 	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 	
 t_stack:	t_stack.c stack.o
@@ -42,10 +42,10 @@ t_queue:	t_queue.c queue.o
 lstring.o: lstring.c
 	$(CC) -c $^ $(CFLAGS)
 
-btree.o: btree.c stack.o
+btree.o: btree.c
 	$(CC) -c $^ $(CFLAGS)
 
-bstree.o: bstree.c btree.o
+bstree.o: bstree.c
 	$(CC) -c $^ $(CFLAGS)
 
 stack.o:	stack.c
