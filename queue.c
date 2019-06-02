@@ -71,7 +71,7 @@ anytype enqueue_cqueue (pcqueue _queue, anytype _e) {
 	return _e;
 }
 
-// TODO TESTING... 
+
 anytype dequeue_cqueue (pcqueue _queue) {
 	if (_queue && ! isempty_cqueue (_queue)) {
 		anytype e = _queue -> array [_queue -> head];
