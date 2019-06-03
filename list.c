@@ -5,6 +5,8 @@
 static void __def_free_hook (const void*);
 static int __ensure_enough_mem (parraylist);
 static int __default_cmp_func (const anytype, const anytype);
+static plistnode __delete_linklist_key (
+		plinklist, plistnode, anytype, cmphook, freehook);
 
 
 /****************** Array list *******************/
@@ -333,6 +335,41 @@ int find_linklist (plinklist _list,
 	return -1;
 }
 
+
+// TODO testing.
+void delete_linklist_key (plinklist _list, 
+		anytype _key, cmphook _cmp, freehook _fr) {
+	if (! _list) return;
+	if (! _cmp) _cmp = __default_cmp_func;
+	if (! _fr) _fr = __def_free_hook;
+
+	_list -> first = __delete_linklist_key (
+			_list, _list -> first, _key, _cmp, _fr);
+}
+
+// TODO testing.
+static plistnode __delete_linklist_key (
+		plinklist _l, plistnode _lsub, 
+		anytype _k, cmphook _cmp, freehook _fr) {
+	plistnode p = NULL;
+	if (! _lsub) return NULL;
+	if (CMP_EQ == _cmp (
+				_lsub -> data, _k)) {
+		p = _lsub -> next; 
+		_fr (_lsub -> data);
+		free (_lsub);
+		_l -> count --;
+
+		if (p)
+			p -> next = __delete_linklist_key (_l, 
+					p -> next, _k, _cmp, _fr);
+		return p;
+	} else {
+		_lsub -> next = __delete_linklist_key (
+				_l, _lsub -> next, _k, _cmp, _fr);
+		return _lsub;
+	}
+}
 
 static void __def_free_hook (const void* _x) 
 	{ /* DOING NOTHING!!! */ }

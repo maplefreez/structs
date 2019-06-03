@@ -24,6 +24,7 @@ typedef struct _arraylist {
 } arraylist, *parraylist;
 
 
+
 /* Create a new array list without
  * any input data. It hold a default
  * length array, defined by macro 
@@ -138,6 +139,23 @@ extern int insert_linklist (plinklist, anytype, int);
  * 
  * Return the element data if successful. Or return NULL. */
 extern anytype delete_linklist (plinklist, int);
+
+
+/* Delete all the nodes in a linked list entity, that
+ * its data domain equals to the key parameter, $2. This
+ * is a recursive implementation.
+ *
+ * $1  Linked-list to be manipulated.
+ * $2  The key of the node to be searched and deleted.
+ * $3  The function used to compare two keys.
+ * $4  A customer-defined free hook for 'anytype' structure.
+ *      If NULL is passed, the function invokes the default
+ *      implementation (Doing nothing). 
+ * 
+ * Note: if $1 is NULL, the function directly return. */
+extern void delete_linklist_key (
+		plinklist, anytype, 
+		cmphook, freehook);
 
 
 /* Find the first match element by key. Caller should 
