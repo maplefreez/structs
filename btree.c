@@ -127,7 +127,8 @@ void bt_leveltraversal (pbtree _t, bt_visitf _func) {
 			if (x -> left) enqueue_cqueue (q, x -> left);
 			if (x -> right) enqueue_cqueue (q, x -> right);
 		}
-		
+
+		release_cqueue (q);
 	}
 }
 
