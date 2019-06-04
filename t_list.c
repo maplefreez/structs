@@ -11,7 +11,9 @@ static void t_linklist_delete ();
 static void t_linklist_find ();
 static void t_linklist_create_by_arr ();
 static void t_linklist_release ();
+static void t_linklist_foreach ();
 static void __def_free_hook (const void*);
+static void __llist_visitf (plistnode);
 
 
 
@@ -24,6 +26,7 @@ int main (int argc, char* argv []) {
 	t_linklist_find ();
 	t_linklist_delete ();
 	t_linklist_release ();
+	t_linklist_foreach ();
 	return 0;
 }
 
@@ -248,6 +251,37 @@ static void t_linklist_release () {
 	release_linklist (list, NULL);
 }
 
+
+static void t_linklist_foreach () {
+	{ // 0x01
+		plinklist l = NULL;
+		foreach_linklist (l, NULL);
+		foreach_linklist (l, __llist_visitf);
+	}
+
+	{ // 0x02
+		anytype input [16] = {0, }; int i;
+		for (i = 0; i < 16; ++ i)
+			input [i] = (anytype) (i + 1);
+		plinklist l = create_linklist_by_arr_revr (input, 16);
+		assert (l);
+
+		foreach_linklist (l, __llist_visitf);
+		puts ("");
+		foreach_linklist_revr_recr (l, __llist_visitf);
+		puts ("");
+
+		release_linklist (l, __def_free_hook);
+	}
+}
+
+
+static void __llist_visitf (plistnode _node) {
+	if (_node) 
+		printf ("%d ", _node -> data);
+	else
+		printf ("%s", "NULL ");
+}
 
 static void __def_free_hook (const void* x) 
 	{ /* Doing nothing. */ }
