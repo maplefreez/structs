@@ -5,8 +5,9 @@
 static void __def_free_hook (const void*);
 static int __ensure_enough_mem (parraylist);
 static int __default_cmp_func (const anytype, const anytype);
-static plistnode __delete_linklist_key (
+static plistnode __delete_linklist_key_recr (
 		plinklist, plistnode, anytype, cmphook, freehook);
+static void __foreach_linklist_revr_recr (plistnode, llist_visitf);
 
 
 /****************** Array list *******************/
@@ -337,18 +338,18 @@ int find_linklist (plinklist _list,
 
 
 // TODO testing.
-void delete_linklist_key (plinklist _list, 
+void delete_linklist_key_recr (plinklist _list, 
 		anytype _key, cmphook _cmp, freehook _fr) {
 	if (! _list) return;
 	if (! _cmp) _cmp = __default_cmp_func;
 	if (! _fr) _fr = __def_free_hook;
 
-	_list -> first = __delete_linklist_key (
+	_list -> first = __delete_linklist_key_recr (
 			_list, _list -> first, _key, _cmp, _fr);
 }
 
 // TODO testing.
-static plistnode __delete_linklist_key (
+static plistnode __delete_linklist_key_recr (
 		plinklist _l, plistnode _lsub, 
 		anytype _k, cmphook _cmp, freehook _fr) {
 	plistnode p = NULL;
@@ -361,11 +362,11 @@ static plistnode __delete_linklist_key (
 		_l -> count --;
 
 		if (p)
-			p -> next = __delete_linklist_key (_l, 
+			p -> next = __delete_linklist_key_recr (_l, 
 					p -> next, _k, _cmp, _fr);
 		return p;
 	} else {
-		_lsub -> next = __delete_linklist_key (
+		_lsub -> next = __delete_linklist_key_recr (
 				_l, _lsub -> next, _k, _cmp, _fr);
 		return _lsub;
 	}
@@ -373,7 +374,49 @@ static plistnode __delete_linklist_key (
 
 
 // TODO testing.
-plinklist create_linklist_by_arr_desc (
+void delete_linklist_key (plinklist _l, anytype _key, 
+		cmphook _cmp, freehook _fr) {
+	plistnode p, r, pre;
+	if (! _l) return;
+	if (! _cmp) _cmp = __default_cmp_func;
+	if (! _fr) _fr = __def_free_hook;
+
+	p = _l -> first;
+	/* Process the first node. */
+	while (p) {
+		if (CMP_EQ == _cmp (p -> data, _key)) {
+			_l -> first = p -> next;
+			_fr (p -> data);
+			free (p);
+			_l -> count --;
+		} else {
+			r = p;
+			pre = p;
+			p = p -> next;
+			break;
+		}
+	}
+
+	/* Process the remaining elements 
+		 after the first one. */
+	while (p) {
+		if (CMP_EQ == _cmp (p -> data, _key)) {
+			pre -> next = p -> next;
+			_fr (p -> data);
+			free (p);
+			_l -> count --;
+		} else {
+			pre = p;
+			r -> next = p;
+			p = p -> next;
+		}
+	}
+	r -> next = NULL;
+}
+
+
+// TODO testing.
+plinklist create_linklist_by_arr_revr (
 		anytype* _arr, int _len) {
 	int i = 0;
 	plinklist list;
@@ -404,6 +447,32 @@ err:
 	release_linklist (list, __def_free_hook);
 	return NULL;
 }
+
+// TODO testing.
+void foreach_linklist (
+		plinklist _l, llist_visitf _vf) {
+	plistnode p;
+	if (! _l || ! _vf) return;
+
+	p = _l -> first;
+	while (p) _vf (p);
+}
+
+
+// TODO testing.
+void foreach_linklist_revr_recr (
+		plinklist _l, llist_visitf _vf) {
+	if (! _l || ! _vf) return;
+	__foreach_linklist_revr_recr (_l -> first, _vf);
+}
+
+
+static void __foreach_linklist_revr_recr (
+		plistnode _n, llist_visitf _vf) {
+	if (_n) __foreach_linklist_revr_recr (_n -> next, _vf);
+	_vf (_n);
+}
+
 
 static void __def_free_hook (const void* _x) 
 	{ /* DOING NOTHING!!! */ }

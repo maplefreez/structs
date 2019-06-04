@@ -90,6 +90,10 @@ typedef struct _linklist {
 	int count;
 } linklist, *plinklist;
 
+/* A function prototype for traversing 
+   each element in a linked-list. */
+typedef void (*llist_visitf) (plistnode);
+
 
 /* Create a new linked-list without any
  * element. 
@@ -119,7 +123,7 @@ extern plinklist create_linklist_by_arr (anytype*, int);
  * 
  * Return new linked-list entity ptr successfully.
  * Or return NULL. */
-extern plinklist create_linklist_by_arr_desc (anytype*, int);
+extern plinklist create_linklist_by_arr_revr (anytype*, int);
 
 
 /* Release a linked-list entity.
@@ -166,8 +170,22 @@ extern anytype delete_linklist (plinklist, int);
  *      implementation (Doing nothing). 
  * 
  * Note: if $1 is NULL, the function directly return. */
-extern void delete_linklist_key (
+extern void delete_linklist_key_recr (
 		plinklist, anytype, 
+		cmphook, freehook);
+
+
+/* Delete all the nodes in a linked list entity, that
+ * its data domain equals to the key parameter, $2.
+ *
+ * $1  Linked-list to be manipulated.
+ * $2  The key of the node to be searched and deleted.
+ * $3  The function used to compare two keys.
+ * $4  A customer-defined free hook for 'anytype' structure.
+ *      If NULL is passed, the function invokes the default
+ *      implementation (Doing nothing). 
+ * Note: if $1 is NULL, the function directly return. */
+extern void delete_linklist_key (plinklist, anytype,
 		cmphook, freehook);
 
 
@@ -186,6 +204,25 @@ extern void delete_linklist_key (
  * Note: A NULL list ptr conducts to -1 
  * returning directly. */
 extern int find_linklist (plinklist, anytype, cmphook);
+
+/* Traverse each element in a linked-list.
+ * $1  List entity ptr.
+ * $2  The accessor function difined by user.
+ *
+ * Note: If $1 or $2 is NULL, nothing will be done. The
+   function exits directly. */
+extern void foreach_linklist (plinklist, llist_visitf);
+
+
+/* Traverse each element of a linked-list with 
+ * reversed order. It's a recursive implementation.
+ *
+ * $1  List entity ptr.
+ * $2  The accessor function difined by user.
+ *
+ * Note: If $1 or $2 is NULL, nothing will be done. The
+   function exits directly. */
+extern void foreach_linklist_revr_recr (plinklist, llist_visitf);
 
 
 #endif // ~ _LIST_H_
