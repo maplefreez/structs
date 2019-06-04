@@ -371,6 +371,40 @@ static plistnode __delete_linklist_key (
 	}
 }
 
+
+// TODO testing.
+plinklist create_linklist_by_arr_desc (
+		anytype* _arr, int _len) {
+	int i = 0;
+	plinklist list;
+	plistnode p = NULL;
+
+	if (! _arr || _len <= 0) return NULL;
+
+	list = new_linklist ();
+	if (! list) return NULL;
+
+	p = _new_listnode (_arr [i ++], NULL);
+	if (! p) goto err;
+	list -> first = p;
+
+	while (i < _len) {
+		p = _new_listnode (_arr [i ++], NULL);
+		if (! p) goto err;
+		p -> next = list -> first;
+		list -> first = p;
+	}
+
+	list -> count = i;
+	return list;
+
+err:
+	/* I donot release each element at this time.
+	 for caller must hand the input array. */
+	release_linklist (list, __def_free_hook);
+	return NULL;
+}
+
 static void __def_free_hook (const void* _x) 
 	{ /* DOING NOTHING!!! */ }
 

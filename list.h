@@ -109,6 +109,19 @@ extern plinklist new_linklist ();
 extern plinklist create_linklist_by_arr (anytype*, int);
 
 
+/* Create a linked-list by inputing anytype array. Note
+ * this implementation create a list entity with reversed  
+ * order input array.
+ * $1  Array used to create list, if $1 NULL, nothing
+ *      shell be done and return NULL instantly.
+ * $2  The length of $1. The function access the number
+ *      of elements in $1 by this parameter.
+ * 
+ * Return new linked-list entity ptr successfully.
+ * Or return NULL. */
+extern plinklist create_linklist_by_arr_desc (anytype*, int);
+
+
 /* Release a linked-list entity.
  * $1  linked-list entity ptr to be released. Return instantly
         if it's NULL.
