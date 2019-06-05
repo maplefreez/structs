@@ -188,6 +188,14 @@ extern void delete_linklist_key_recr (
 extern void delete_linklist_key (plinklist, anytype,
 		cmphook, freehook);
 
+/* Get element by index. The index ranges from 1 to 
+ * count.
+ * $1  The linked-list ptr.
+ * $2  The index at which it's data is returned. 
+ *
+ * Return... */
+extern anytype get_linklist_index (plinklist, int);
+
 
 /* Find the first match element by key. Caller should 
  * pass the function ptr comparing between each element
@@ -223,6 +231,13 @@ extern void foreach_linklist (plinklist, llist_visitf);
  * Note: If $1 or $2 is NULL, nothing will be done. The
    function exits directly. */
 extern void foreach_linklist_revr_recr (plinklist, llist_visitf);
+
+
+/* Sort the element in ascending order.
+ * 
+ * $1  List entity ptr.
+ * $2  The comparation function ptr. */
+extern void sort_linklist (plinklist, cmphook);
 
 
 #endif // ~ _LIST_H_

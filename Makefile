@@ -31,7 +31,7 @@ t_stack:	t_stack.c stack.o
 t_sort:	t_sort.c sort.o
 	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
-t_list:	t_list.c list.o
+t_list:	t_list.c list.o sort.o
 	$(CC) -o $@ $^ $(CFLAGS) $(CTESTFLAGS)
 
 t_queue:	t_queue.c queue.o

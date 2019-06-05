@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "list.h"
+#include "sort.h"
 
 
 /****** Pre-defination for test suits. ******/
@@ -12,6 +13,8 @@ static void t_linklist_find ();
 static void t_linklist_create_by_arr ();
 static void t_linklist_release ();
 static void t_linklist_foreach ();
+static void t_linklist_sort ();
+static void t_linklist_getindex ();
 
 /* For testing */
 anytype input [16] = {0, };
@@ -27,6 +30,7 @@ static void __exit_for_testing ();
 /* Main test entry. */
 int main (int argc, char* argv []) {
 	__init_for_testing ();
+
 	t_arraylist_insert ();
 	t_linklist_insert ();
 	t_linklist_create_by_arr ();
@@ -34,6 +38,10 @@ int main (int argc, char* argv []) {
 	t_linklist_delete ();
 	t_linklist_release ();
 	t_linklist_foreach ();
+	t_linklist_getindex ();
+	t_linklist_sort ();
+
+	__exit_for_testing ();
 	return 0;
 }
 
@@ -286,6 +294,95 @@ static void t_linklist_foreach () {
 		release_linklist (l, NULL);
 	}
 }
+
+
+
+static void t_linklist_sort () {
+	{ // 0x01
+		plinklist l = NULL;
+		linklist L = { NULL, 0 };
+		sort_linklist (l, NULL);
+		sort_linklist (&L, NULL);
+	}
+
+	{ // 0x02
+		int i;
+		anytype array [16] = {
+			64, 62, 60, 58,
+			56, 54, 52, 50,
+			48, 46, 44, 42,
+			40, 38, 36, 32
+		}; 
+
+		plinklist l = create_linklist_by_arr (array, 16);
+		plistnode p = NULL;
+		assert (l && l -> count == 16);
+		sort_linklist (l, NULL);
+
+		/* Sort array. */
+		straight_insertsort (array, 16, NULL);
+
+		for (i ^= i; i < 16; i ++) {
+			anytype x = get_linklist_index (l, i + 1);
+			assert (array [i] == x);
+		}
+		
+		p = l -> first; i ^= i;
+		while (p) { p = p -> next; i ++; }
+		assert (i == l -> count);
+
+		release_linklist (l, NULL);
+	}
+
+	{ // 0x03
+		anytype array [1] = { 4096 }; int i;
+		plistnode p = NULL;
+		plinklist l = create_linklist_by_arr (array, 1);
+		assert (l && l -> count == 1);
+
+		sort_linklist (l, NULL);
+		anytype x = get_linklist_index (l, 1);
+		assert (array [0] == x);
+
+		p = l -> first; i ^= i;
+		while (p) { p = p -> next; i ++; }
+		assert (i == l -> count);
+
+		release_linklist (l, NULL);
+	}
+
+}
+
+
+static void t_linklist_getindex () {
+	{ // 0x01
+		plinklist l = NULL;
+		linklist L = { NULL, 0 };
+		assert (! get_linklist_index (l, 0));
+		assert (! get_linklist_index (&L, 12));
+	}
+
+	{ // 0x02
+		int i;
+		anytype array [16] = {
+			1, 2, 3, 4, 5, 
+			6, 7, 8, 9, 10,
+			11, 12, 13, 14,
+			15, 16
+		}; 
+
+		plinklist l = create_linklist_by_arr (array, 16);
+		assert (l && l -> count == 16);
+
+		for (i ^= i; i < 16; i ++) {
+			anytype x = get_linklist_index (l, i + 1);
+			assert (array [i] == x);
+		}
+
+		release_linklist (l, NULL);
+	}
+}
+
 
 static void __init_for_testing () {
 		int i;

@@ -231,6 +231,17 @@ void release_linklist (
 }
 
 
+anytype get_linklist_index (plinklist _l, int _idx) {
+	plistnode p = NULL;
+	if (! _l || _idx <= 0 || _idx > _l -> count) 
+		return NULL;
+
+	p = _l -> first;
+	while (p && _idx -- > 1)
+		p = p -> next;
+	return p -> data;
+}
+
 int insert_linklist (plinklist _list, 
 		anytype _e, int _idx) {
 	int i, preidx;
@@ -476,6 +487,40 @@ static void __foreach_linklist_revr_recr (
 		__foreach_linklist_revr_recr (_n -> next, _vf);
 		_vf (_n);
 	}
+}
+
+
+// TODO... testing.
+void sort_linklist (plinklist _l, cmphook _cmp) {
+	plistnode pre, p, post = NULL, tmp;
+	listnode node;
+
+	if (! _l || ! _l -> first) return;
+	if (! _cmp) _cmp = __default_cmp_func;
+
+	node.next = _l -> first;
+	p = _l -> first;
+	if (p) post = p -> next;
+
+	p -> next = NULL;
+	p = post;
+
+	while (p) {
+		pre = &node;
+		post = p -> next;
+
+		while (pre -> next && 
+				CMP_LT == _cmp (pre -> next -> data, 
+					p -> data))
+			pre = pre -> next;
+
+		p -> next = pre-> next;
+		pre -> next = p;
+
+		p = post;
+	}
+
+	_l -> first = node.next;
 }
 
 
