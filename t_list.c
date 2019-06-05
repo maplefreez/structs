@@ -12,14 +12,21 @@ static void t_linklist_find ();
 static void t_linklist_create_by_arr ();
 static void t_linklist_release ();
 static void t_linklist_foreach ();
+
+/* For testing */
+anytype input [16] = {0, };
+
 static void __def_free_hook (const void*);
-static void __llist_visitf (plistnode);
-
-
+static void __llist_visitf1 (plistnode);
+static void __llist_visitf2 (plistnode);
+static void __llist_visitf3 (plistnode);
+static void __init_for_testing ();
+static void __exit_for_testing ();
 
 
 /* Main test entry. */
 int main (int argc, char* argv []) {
+	__init_for_testing ();
 	t_arraylist_insert ();
 	t_linklist_insert ();
 	t_linklist_create_by_arr ();
@@ -256,31 +263,58 @@ static void t_linklist_foreach () {
 	{ // 0x01
 		plinklist l = NULL;
 		foreach_linklist (l, NULL);
-		foreach_linklist (l, __llist_visitf);
+		foreach_linklist (l, __llist_visitf1);
 	}
 
 	{ // 0x02
-		anytype input [16] = {0, }; int i;
-		for (i = 0; i < 16; ++ i)
-			input [i] = (anytype) (i + 1);
 		plinklist l = create_linklist_by_arr_revr (input, 16);
 		assert (l);
 
-		foreach_linklist (l, __llist_visitf);
-		puts ("");
-		foreach_linklist_revr_recr (l, __llist_visitf);
-		puts ("");
+		foreach_linklist (l, __llist_visitf1);
+		foreach_linklist_revr_recr (l, __llist_visitf2);
 
 		release_linklist (l, __def_free_hook);
 	}
+
+	{ // 0x03
+		anytype arr [1] = { 9999 };
+		plinklist l = create_linklist_by_arr_revr (arr, 1);
+
+		foreach_linklist (l, __llist_visitf3);
+		foreach_linklist_revr_recr (l, __llist_visitf3);
+
+		release_linklist (l, NULL);
+	}
+}
+
+static void __init_for_testing () {
+		int i;
+		for (i = 0; i < 16; ++ i)
+			input [i] = (anytype) (i + 1);
+}
+
+static void __exit_for_testing () {
 }
 
 
-static void __llist_visitf (plistnode _node) {
-	if (_node) 
-		printf ("%d ", _node -> data);
-	else
-		printf ("%s", "NULL ");
+static void __llist_visitf1 (plistnode _node) {
+	static int c = 0;
+	if (_node) {
+		int index = 15 - c;
+		assert (_node -> data == input [index]);
+		c ++;
+	}
+}
+
+static void __llist_visitf2 (plistnode _node) {
+	static int c = 0;
+	if (_node)
+		assert (_node -> data == input [c ++]);
+}
+
+static void __llist_visitf3 (plistnode _node) {
+	if (_node)
+		assert (_node -> data == (anytype) 9999);
 }
 
 static void __def_free_hook (const void* x) 

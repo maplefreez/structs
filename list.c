@@ -448,18 +448,21 @@ err:
 	return NULL;
 }
 
-// TODO testing.
+
 void foreach_linklist (
 		plinklist _l, llist_visitf _vf) {
 	plistnode p;
 	if (! _l || ! _vf) return;
 
 	p = _l -> first;
-	while (p) _vf (p);
+	while (p) {
+		_vf (p);
+		p = p -> next;
+	}
 }
 
 
-// TODO testing.
+
 void foreach_linklist_revr_recr (
 		plinklist _l, llist_visitf _vf) {
 	if (! _l || ! _vf) return;
@@ -469,8 +472,10 @@ void foreach_linklist_revr_recr (
 
 static void __foreach_linklist_revr_recr (
 		plistnode _n, llist_visitf _vf) {
-	if (_n) __foreach_linklist_revr_recr (_n -> next, _vf);
-	_vf (_n);
+	if (_n) { 
+		__foreach_linklist_revr_recr (_n -> next, _vf);
+		_vf (_n);
+	}
 }
 
 
