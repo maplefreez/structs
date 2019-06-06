@@ -11,6 +11,7 @@ static void t_linklist_insert ();
 static void t_linklist_delete ();
 static void t_linklist_find ();
 static void t_linklist_create_by_arr ();
+static void t_linklist_create_by_arr_revr ();
 static void t_linklist_release ();
 static void t_linklist_foreach ();
 static void t_linklist_sort ();
@@ -34,6 +35,7 @@ int main (int argc, char* argv []) {
 	t_arraylist_insert ();
 	t_linklist_insert ();
 	t_linklist_create_by_arr ();
+	t_linklist_create_by_arr_revr ();
 	t_linklist_find ();
 	t_linklist_delete ();
 	t_linklist_release ();
@@ -150,6 +152,66 @@ static void t_linklist_create_by_arr () {
 	}
 
 	release_linklist (list, NULL);
+}
+
+
+static void t_linklist_create_by_arr_revr () {
+	{ // 0x01
+		anytype* data = NULL;
+		assert (! create_linklist_by_arr_revr (NULL, 0));
+		assert (! create_linklist_by_arr_revr (data, 0));
+		assert (! create_linklist_by_arr_revr (NULL, 512));
+	}
+
+	{ // 0x02
+		int i = 0;
+		anytype data [] = {
+			0, 1, 2, 3, 4, 5,
+			6, 7, 8, 9, 10,
+			20, 30, 40, 50,
+			60, 70, 80, 90,
+			100, 120
+		};
+		plistnode node = NULL;
+		int count = sizeof (data) / sizeof (anytype);
+
+		plinklist list = create_linklist_by_arr_revr (
+				data, count);
+		assert (list);
+		assert (list -> count == count);
+
+		node = list -> first;
+		while (i < count && node) {
+			assert (node -> data == data [count - (++ i)]);
+			node = node -> next;
+		}
+
+		release_linklist (list, NULL);
+	}
+
+	{ // 0x03
+		anytype data [2] = { 0x80, 0xEF };
+		plistnode node = NULL;
+		plinklist list = create_linklist_by_arr_revr (
+				data, 2);
+		assert (list);
+		assert (list -> count == 2);
+
+		/* 1st(= 0xEF) */
+		node = list -> first;
+		assert (node && node -> data == data [1]);
+
+		/* 2nd(= 0x80) */
+		node = node -> next;
+		assert (node && node -> data == data [0]);
+
+		/* 3rd(= NULL) */
+		node = node -> next;
+		assert (! node);
+
+		release_linklist (list, NULL);
+	}
+
 }
 
 
@@ -378,6 +440,30 @@ static void t_linklist_getindex () {
 			anytype x = get_linklist_index (l, i + 1);
 			assert (array [i] == x);
 		}
+
+		release_linklist (l, NULL);
+	}
+
+	{ // 0x03
+		anytype array [12] = {
+			1, 2, 3, 4, 5, 
+			6, 7, 8, 9, 10,
+			11, 12 
+		}, x;
+
+		plinklist l = create_linklist_by_arr (array, 12);
+		assert (l && l -> count == 12);
+
+		x = get_linklist_index (l, 32);
+		assert (NULL == x);
+		x = get_linklist_index (l, 0);
+		assert (NULL == x);
+		x = get_linklist_index (l, 9);
+		assert ((anytype) 9 == x);
+		x = get_linklist_index (l, 13);
+		assert (NULL == x);
+		x = get_linklist_index (l, 12);
+		assert ((anytype) 12 == x);
 
 		release_linklist (l, NULL);
 	}

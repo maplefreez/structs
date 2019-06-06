@@ -426,7 +426,7 @@ void delete_linklist_key (plinklist _l, anytype _key,
 }
 
 
-// TODO testing.
+
 plinklist create_linklist_by_arr_revr (
 		anytype* _arr, int _len) {
 	int i = 0;
@@ -490,7 +490,6 @@ static void __foreach_linklist_revr_recr (
 }
 
 
-// TODO... testing.
 void sort_linklist (plinklist _l, cmphook _cmp) {
 	plistnode pre, p, post = NULL, tmp;
 	listnode node;
