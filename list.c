@@ -242,6 +242,44 @@ anytype get_linklist_index (plinklist _l, int _idx) {
 	return p -> data;
 }
 
+
+anytype get_linklist_max (plinklist _l, cmphook _cmp) {
+	plistnode p, max;
+
+	if (! _l || ! _l -> first) return NULL;
+	if (! _cmp) _cmp = __default_cmp_func;
+
+	max = _l -> first;
+	p = _l -> first;
+	while (p) {
+		p = p -> next;
+		if (p && CMP_LT == _cmp (max -> data, p -> data))
+			{
+				max = p;
+			}
+	}
+	return max -> data;
+}
+
+
+anytype get_linklist_min (plinklist _l, cmphook _cmp) {
+	plistnode p, min;
+
+	if (! _l || ! _l -> first) return NULL;
+	if (! _cmp) _cmp = __default_cmp_func;
+
+	min = _l -> first;
+	p = _l -> first;
+	while (p) {
+		p = p -> next;
+		if (p && CMP_GT == _cmp (min -> data, p -> data))
+			{
+				min = p;
+			}
+	}
+	return min -> data;
+}
+
 int insert_linklist (plinklist _list, 
 		anytype _e, int _idx) {
 	int i, preidx;

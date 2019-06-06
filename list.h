@@ -197,6 +197,29 @@ extern void delete_linklist_key (plinklist, anytype,
 extern anytype get_linklist_index (plinklist, int);
 
 
+/* Get the maximum element in a linked-list.
+ * $1  The linked-list ptr.
+ * $2  The comparation function ptr.
+ * 
+ * Return the data domain of the maximum node, 
+ * or return NULL if $1 is NULL. 
+ *
+ * Note: As to an empty linked-list, it 
+ * directly returns NULL. */
+extern anytype get_linklist_max (plinklist, cmphook);
+
+/* Get the minimum element in a linked-list.
+ * $1  The linked-list ptr.
+ * $2  The comparation function ptr.
+ * 
+ * Return the data domain of the minimum node, 
+ * or return NULL if $1 is NULL. 
+ *
+ * Note: As to an empty linked-list, it 
+ * directly returns NULL. */
+extern anytype get_linklist_min (plinklist, cmphook);
+
+
 /* Find the first match element by key. Caller should 
  * pass the function ptr comparing between each element
  * and key, or the function uses default implementation,
