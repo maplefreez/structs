@@ -16,6 +16,9 @@ static void t_linklist_release ();
 static void t_linklist_foreach ();
 static void t_linklist_sort ();
 static void t_linklist_getindex ();
+static void t_linklist_getmaximum ();
+static void t_linklist_getminimum ();
+static void t_linklist_delete_key ();
 
 /* For testing */
 anytype input [16] = {0, };
@@ -41,7 +44,10 @@ int main (int argc, char* argv []) {
 	t_linklist_release ();
 	t_linklist_foreach ();
 	t_linklist_getindex ();
+	t_linklist_getmaximum ();
+	t_linklist_getminimum ();
 	t_linklist_sort ();
+	t_linklist_delete_key ();
 
 	__exit_for_testing ();
 	return 0;
@@ -464,6 +470,172 @@ static void t_linklist_getindex () {
 		assert (NULL == x);
 		x = get_linklist_index (l, 12);
 		assert ((anytype) 12 == x);
+
+		release_linklist (l, NULL);
+	}
+}
+
+
+static void t_linklist_getmaximum () {
+	{ // 0x01
+		plinklist l = NULL;
+		linklist L = { NULL, 0 };
+		assert (! get_linklist_max (l, NULL));
+		assert (! get_linklist_max (&L, NULL));
+	}
+
+	{ // 0x02
+		int i; int count;
+		anytype array [] = {
+			1, 2, 3, 4, 5, 
+			6, 7, 8, 9, 10,
+			11, 12, 13, 14,
+			15, 16, 78, 23, 0,
+			233431, 87, 91, 6553, 21
+		}, x; 
+
+		count = sizeof (array) / sizeof (anytype);
+
+		plinklist l = create_linklist_by_arr (array, count);
+		assert (l && l -> count == count);
+
+		x = get_linklist_max (l, NULL);
+		assert (x == array [19]);
+
+		release_linklist (l, NULL);
+	}
+
+	{ // 0x03
+		anytype array [1] = {
+			-65535
+		}, x;
+
+		plinklist l = create_linklist_by_arr (array, 1);
+		assert (l && l -> count == 1);
+
+		x = get_linklist_max (l, NULL);
+		assert (array [0] == x);
+
+		release_linklist (l, NULL);
+	}
+}
+
+static void t_linklist_getminimum () {
+	{ // 0x01
+		plinklist l = NULL;
+		linklist L = { NULL, 0 };
+		assert (! get_linklist_min (l, NULL));
+		assert (! get_linklist_min (&L, NULL));
+	}
+
+	{ // 0x02
+		int i; int count;
+		anytype array [] = {
+			1, 2, 3, 4, 5, 
+			6, 7, 8, 9, 10,
+			11, 12, 13, 14,
+			15, 16, 78, 23, 0,
+			233431, 87, 91, 6553, 21
+		}, x; 
+
+		count = sizeof (array) / sizeof (anytype);
+
+		plinklist l = create_linklist_by_arr (array, count);
+		assert (l && l -> count == count);
+
+		x = get_linklist_min (l, NULL);
+		assert (x == array [18]);
+
+		release_linklist (l, NULL);
+	}
+
+	{ // 0x03
+		anytype array [1] = {
+			-65535
+		}, x;
+
+		plinklist l = create_linklist_by_arr (array, 1);
+		assert (l && l -> count == 1);
+
+		x = get_linklist_min (l, NULL);
+		assert (array [0] == x);
+
+		release_linklist (l, NULL);
+	}
+}
+
+
+static void t_linklist_delete_key () {
+	{ // 0x01
+		delete_linklist_key (NULL, (anytype) 123, NULL, NULL);
+	}
+
+	{ // 0x02
+		int i = 0;
+		int count = 0;
+		plinklist l;
+		plistnode p;
+		anytype array [] = {
+			1, 2, 3, 4, 5, 6,
+			7, 8, 8, 9, 8, 10,
+			12, 39, 53, 0, -9,
+			893, -8, 98, 8, 7
+		};
+
+		count = sizeof (array) / sizeof (anytype);
+		l = create_linklist_by_arr (array, count);
+		assert (l && l -> count == count);
+
+		/* Delete all the element whose 
+			 value is 8. */
+		delete_linklist_key (l, (anytype) 8, NULL, NULL);
+
+		/* Check. */
+		p = l -> first;
+		while (i < count && p) {
+			if (array [i] != (anytype) 8) {
+				assert (array [i] == p -> data);
+				p = p -> next;
+			}
+			++ i;
+		}
+
+		release_linklist (l, NULL);
+	}
+
+	{ // 0x03
+		int i = 0;
+		int count = 0;
+		plinklist l;
+		plistnode p;
+		anytype array [] = {
+			9, 9, 9, 9, 9, 9, 
+			9, 9, 9, 9, 9, 9, 
+			9, 9, 9, 9, 9, 9
+		};
+
+		count = sizeof (array) / sizeof (anytype);
+		l = create_linklist_by_arr (array, count);
+		assert (l && l -> count == count);
+
+		/* Delete all the element whose 
+			 value is 8. */
+		delete_linklist_key (l, (anytype) 8, NULL, NULL);
+		assert (l -> count == count);
+		
+		p = l -> first;
+		while (p) {
+			assert (p -> data == (anytype) 9);
+			p = p -> next;
+			++ i;
+		}
+
+		assert (i == count);
+
+		delete_linklist_key (l, (anytype) 9, NULL, NULL);
+		p = l -> first;
+		assert (l -> count == 0);
+		assert (p == NULL);
 
 		release_linklist (l, NULL);
 	}

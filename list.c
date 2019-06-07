@@ -422,45 +422,37 @@ static plistnode __delete_linklist_key_recr (
 }
 
 
-// TODO testing.
+
 void delete_linklist_key (plinklist _l, anytype _key, 
 		cmphook _cmp, freehook _fr) {
 	plistnode p, r, pre;
+	listnode node;
+
 	if (! _l) return;
 	if (! _cmp) _cmp = __default_cmp_func;
 	if (! _fr) _fr = __def_free_hook;
 
+	/* The node is to help the process 
+		 for first node deletion. */
+	node.next = _l -> first;
 	p = _l -> first;
-	/* Process the first node. */
-	while (p) {
-		if (CMP_EQ == _cmp (p -> data, _key)) {
-			_l -> first = p -> next;
-			_fr (p -> data);
-			free (p);
-			_l -> count --;
-		} else {
-			r = p;
-			pre = p;
-			p = p -> next;
-			break;
-		}
-	}
+	pre = &node;
 
 	/* Process the remaining elements 
 		 after the first one. */
 	while (p) {
+		r = p -> next;
 		if (CMP_EQ == _cmp (p -> data, _key)) {
 			pre -> next = p -> next;
 			_fr (p -> data);
 			free (p);
 			_l -> count --;
-		} else {
+		} else
 			pre = p;
-			r -> next = p;
-			p = p -> next;
-		}
+		p = r;
 	}
-	r -> next = NULL;
+
+	_l -> first = node.next;
 }
 
 
