@@ -52,6 +52,18 @@ typedef struct _arrstack {
  * Otherwise return NULL. */
 extern parrstack arrstack_create (int);
 
+/* Create a new stack filled with elements in a 
+ * special array. Note the last element in the array
+ * shell be placed at the top of the new stack.
+ * 
+ * $1  The array.
+ * $2  The length of array.
+ * 
+ * Return the ptr of new stack if successful. 
+ * If the array is NULL or it's an empty one, the
+ * function return NULL. */
+extern parrstack arrstack_create_by_arr (anytype*, int);
+
 /* Push one element into stack. If $1 or $2
  * is NULL, nothing will be done in this
  * function. Note: if the stack is full, it
