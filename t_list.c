@@ -7,6 +7,9 @@
 
 /****** Pre-defination for test suits. ******/
 static void t_arraylist_insert ();
+static void t_arraylist_reverse ();
+static void t_arraylist_create_by_arr ();
+
 static void t_linklist_insert ();
 static void t_linklist_delete ();
 static void t_linklist_find ();
@@ -36,6 +39,9 @@ int main (int argc, char* argv []) {
 	__init_for_testing ();
 
 	t_arraylist_insert ();
+	t_arraylist_create_by_arr ();
+	t_arraylist_reverse ();
+
 	t_linklist_insert ();
 	t_linklist_create_by_arr ();
 	t_linklist_create_by_arr_revr ();
@@ -96,6 +102,48 @@ static void t_arraylist_insert () {
 
 }
 
+
+static void t_arraylist_reverse () {
+	{ // 0x01
+		parraylist list = NULL;
+		assert (reverse_arraylist (list) == NULL);
+	}
+
+	{ // 0x02
+		anytype input [] = {
+			1, 2, 3, 4, 5, 6, 7, 8,
+			9, 10, 11, 12, 13, 14, 15, 16
+		};
+		int i, count = sizeof (input) / sizeof (anytype);
+		parraylist list = create_arraylist_by_arr (input, count);
+		assert (list);
+
+		assert (reverse_arraylist (list) == list);
+
+		for (i ^= i; i < count; ++ i)
+			assert (list -> array [i] == input [count - i - 1]);
+
+		release_arraylist (list, NULL);
+	}
+}
+
+static void t_arraylist_create_by_arr () {
+	{ // 0x02
+		anytype input [] = {
+			1, 2, 3, 4, 5, 6, 7, 8,
+			9, 10, 11, 12, 13, 14, 15, 16
+		};
+		int i, count = sizeof (input) / sizeof (anytype);
+		parraylist list = create_arraylist_by_arr (input, count);
+		assert (list);
+		assert (list -> count == count);
+
+		for (i ^= i; i < count; ++ i)
+			assert (list -> array [i] == input [i]);
+
+		release_arraylist (list, NULL);
+	}
+}
 
 
 static void t_linklist_insert () {

@@ -1,6 +1,7 @@
+#include <stdlib.h>
+#include <stdint.h>
 #include "list.h"
 // #include "common.h"
-#include <stdlib.h>
 
 static void __def_free_hook (const void*);
 static int __ensure_enough_mem (parraylist);
@@ -42,6 +43,7 @@ parraylist create_arraylist (int _initial) {
 
 parraylist create_arraylist_by_arr (
 		anytype* _data, int _cnt) {
+	int i = 0;
 	parraylist list = NULL;
 	anytype* array;
 
@@ -60,14 +62,14 @@ parraylist create_arraylist_by_arr (
 	}
 
 	list -> capacity = _cnt;
+	list -> count = _cnt;
 
 	/* Copy data. I recommend 
 	 * invoking function `memcpy()' . */
-	while (0 >= -- _cnt)
+	while (0 <= -- _cnt)
 		array [_cnt] = _data [_cnt];
 
 	list -> array = array;
-	list -> count = 0;
 
 	return list;
 }
@@ -132,6 +134,28 @@ anytype delete_arraylist (parraylist _list, int _idx) {
 
 	_list -> count --;
 	return target;
+}
+
+
+parraylist reverse_arraylist (parraylist _list) {
+	int h, r;
+	if (! _list) return NULL;
+
+	h = 0; r = _list -> count - 1;
+	while (h < r) {
+		/* Switch array[h] and array [r]. */
+		anytype temp = _list -> array [h];
+		_list -> array [h] = _list -> array [r];
+		_list -> array [r] = temp;
+		// (intptr_t) (_list -> array [h]) ^= 
+		// 	(intptr_t) (_list -> array [r]);
+		// (intptr_t) (_list -> array [r]) ^= 
+		// 	(intptr_t) (_list -> array [h]);
+		// (intptr_t) (_list -> array [h]) ^= 
+		// 	(intptr_t) (_list -> array [r]);
+		++ h, -- r;
+	}
+	return _list;
 }
 
 

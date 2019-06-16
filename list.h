@@ -39,6 +39,13 @@ extern parraylist create_arraylist_by_arr (anytype*, int);
 
 extern void release_arraylist (parraylist, freehook);
 
+/* Reverse the elements in the special array-list.
+ * $1  The linear list entity.
+ * Return $1 if successful, else return NULL. 
+ *
+ * Note: A NULL list ptr causes a NULL returning value. */
+extern parraylist reverse_arraylist (parraylist);
+
 
 /* Insert an element into a separated place.
  * $1  The linear list entity.
@@ -261,6 +268,9 @@ extern void foreach_linklist_revr_recr (plinklist, llist_visitf);
  * $1  List entity ptr.
  * $2  The comparation function ptr. */
 extern void sort_linklist (plinklist, cmphook);
+
+
+extern void trim_linklist ();
 
 
 #endif // ~ _LIST_H_
