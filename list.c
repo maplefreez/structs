@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "list.h"
+#include "sort.h"
 // #include "common.h"
 
 static void __def_free_hook (const void*);
@@ -136,6 +137,45 @@ anytype delete_arraylist (parraylist _list, int _idx) {
 	return target;
 }
 
+
+void delete_arraylist_key (
+		parraylist _l, anytype _key, 
+		cmphook _cmp, freehook _fr) {
+	int del, i;
+	anytype* array;
+
+	if (! _l) return;
+	if (! _cmp) _cmp = __default_cmp_func;
+	if (! _fr) _fr = __def_free_hook;
+
+	array = _l -> array;
+
+	/* The element from del to (i - 1) 
+		 equals to the key. */
+	for (i ^= i, del ^= 0; i < _l -> count; ++ i) {
+		if (CMP_EQ != _cmp (array [i], _key)) {
+			array [del] = array [i];
+			del ++;
+		}
+	}
+	
+	_l -> count = del;
+}
+
+// TODO... testing.
+void remove_same_arraylist (parraylist _l, 
+		cmphook _cmp, freehook _fr) {
+	int i = 0;
+	if (! _l) return;
+	if (! _cmp) _cmp = __default_cmp_func;
+	if (! _fr) _fr = __def_free_hook;
+
+	/* Ascentive order. */
+	quick_sort (_l -> array, _l -> count, _cmp);
+
+	
+
+}
 
 parraylist reverse_arraylist (parraylist _list) {
 	int h, r;

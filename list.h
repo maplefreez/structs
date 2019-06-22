@@ -71,6 +71,31 @@ extern int insert_arraylist (parraylist, anytype, int);
 extern anytype delete_arraylist (parraylist, int);
 
 
+/* Delete all the nodes in an array list entity, that
+ * its data domain equals to the key parameter, $2.
+ *
+ * $1  An Array-list to be manipulated.
+ * $2  The key of the node to be searched and deleted.
+ * $3  The function used to compare two keys.
+ * $4  A customer-defined free hook for 'anytype' structure.
+ *      If NULL is passed, the function invokes the default
+ *      implementation (Doing nothing). 
+ * Note: if $1 is NULL, the function directly returns. */
+extern void delete_arraylist_key (parraylist, anytype, 
+		cmphook, freehook);
+
+
+/* Remove the same element when there exists multiple
+ * elements in an array-list.
+ * $1  An array-list to be manipulated.
+ * $2  The function used to compare two keys.
+ * $3  A customer-defined free hook for 'anytype' structure.
+ *      If NULL is passed, the function invokes the default
+ *      implementation (Doing nothing).
+ * Note: If $1 is NULL, the function directly returns. */
+extern void remove_same_arraylist (parraylist, cmphook, freehook);
+
+
 /* Find the index by an element key.
  *
  * $1  The list entity.

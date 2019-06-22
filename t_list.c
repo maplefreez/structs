@@ -9,6 +9,7 @@
 static void t_arraylist_insert ();
 static void t_arraylist_reverse ();
 static void t_arraylist_create_by_arr ();
+static void t_arraylist_delete_key ();
 
 static void t_linklist_insert ();
 static void t_linklist_delete ();
@@ -40,6 +41,7 @@ int main (int argc, char* argv []) {
 
 	t_arraylist_insert ();
 	t_arraylist_create_by_arr ();
+	t_arraylist_delete_key ();
 	t_arraylist_reverse ();
 
 	t_linklist_insert ();
@@ -140,6 +142,34 @@ static void t_arraylist_create_by_arr () {
 
 		for (i ^= i; i < count; ++ i)
 			assert (list -> array [i] == input [i]);
+
+		release_arraylist (list, NULL);
+	}
+}
+
+
+static void t_arraylist_delete_key () {
+	{ // 0x02
+		anytype input [] = {
+			1, 2, 3, 4, 8, 6, 6, 8,
+			9, 6, 11, 6, 13, 6, 8, 4,
+			6, 6, 6, 6, 6, 6, 7, 6, 6
+		};
+		anytype key = (anytype) 6;
+		int i, j, count = sizeof (input) / sizeof (anytype);
+		parraylist list = create_arraylist_by_arr (input, count);
+		assert (list);
+		assert (list -> count == count);
+
+		delete_arraylist_key (list, key, NULL, NULL);
+
+		for (i ^= i, j ^= j; i < count; ++ i) {
+			if (input [i] == key) continue;
+			else {
+				assert (list -> array [j] == input [i]);
+				j ++;
+			}
+		}
 
 		release_arraylist (list, NULL);
 	}
