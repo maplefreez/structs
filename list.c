@@ -218,6 +218,40 @@ int find_arraylist (parraylist _list,
 }
 
 
+// TODO testing.
+parraylist merge_arraylist (
+		parraylist _a, parraylist _b, cmphook _cmp) {
+	int i, j, k, count;
+	int ac, bc;
+	parraylist c;
+
+	if (!_a || !_b) return NULL;
+	if (_a -> count <= 0 || _b -> count <= 0) return NULL;
+
+	if (_cmp) _cmp == __default_cmp_func;
+
+	ac = _a -> count; bc = _b -> count;
+	count = ac + bc;
+	c = create_arraylist (count);
+
+	/* Merge elements from the 2 list into c. */
+	if (c) {
+		i = j = k = 0;
+		anytype* carr = c -> array;
+		while (i < ac && b < bc) {
+			if (CMP_GT == _cmp (_a -> array [i], _b -> array [j]))
+				carr [k ++] = _b -> array [j ++];
+			else
+				carr [k ++] = _a -> array [i ++];
+		}
+
+		while (i < ac) carr [k ++] = _a -> array [i ++];
+		while (j < bc) carr [k ++] = _b -> array [j ++];
+	}
+
+	return c;
+}
+
 
 
 /****************** Link list *******************/

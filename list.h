@@ -106,6 +106,18 @@ extern void remove_same_arraylist (parraylist, cmphook, freehook);
  * return the first reached index. */
 extern int find_arraylist (parraylist, anytype, cmphook);
 
+/* Merge two ordered array-list.
+ * Note: The function assume the 2 input array-list is 
+ * with ascentive order. And they 2 must hold at lest
+ * one element.
+ * 
+ * $1  The first list entity.
+ * $2  The second list entity.
+ * $3  The function used to compare two keys.
+ * Return a new array-list entity if successful, else 
+ * return NULL. */
+extern parraylist merge_arraylist (parraylist, parraylist, cmphook);
+
 
 /* List node for linked-list implementation. */
 typedef struct _listnode listnode, *plistnode;
