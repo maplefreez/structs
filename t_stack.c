@@ -5,6 +5,7 @@
 
 /****** Pre-defination for test suits. ******/
 static void t_arrstack_create ();
+static void t_arrstack_create_by_arr ();
 static void t_arrstack_push ();
 static void t_arrstack_push1 ();
 static void t_arrstack_release ();
@@ -21,6 +22,7 @@ static int _arr_index = 0;
 /* Main test entry. */
 int main (int argc, char* argv []) {
 	t_arrstack_create ();
+	t_arrstack_create_by_arr ();
 	t_arrstack_release ();
 	t_arrstack_push ();
 	t_arrstack_push1 ();
@@ -62,6 +64,19 @@ static void t_arrstack_create () {
 		assert (stack -> base != NULL);
 		assert (stack -> capacity == DEFAULT_STACK_CAPACITY);
 		arrstack_release (stack, NULL);
+	}
+
+}
+
+
+static void t_arrstack_create_by_arr () {
+	{ // 0x01 
+		anytype temp [16] = {0, 1, 2, };
+		assert (NULL == arrstack_create_by_arr (NULL, 0));
+		assert (NULL == arrstack_create_by_arr (NULL, 512));
+		assert (NULL == arrstack_create_by_arr (temp, 0));
+		assert (NULL == arrstack_create_by_arr (temp, -16));
+		assert (NULL == arrstack_create_by_arr (NULL, -2048));
 	}
 
 }

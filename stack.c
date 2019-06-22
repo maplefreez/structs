@@ -1,5 +1,5 @@
 #include <stdlib.h>
-// #include <string.h>
+#include <string.h>
 #include "stack.h"
 
 static int _arrstack_full (parrstack);
@@ -31,7 +31,7 @@ parrstack arrstack_create (int _capa) {
 }
 
 // TODO testing....
-parrstak arrstack_create_by_arr (
+parrstack arrstack_create_by_arr (
 		anytype* _arr, int _n) {
 	parrstack res = NULL;
 	if (! _arr || _n <= 0) return NULL;
