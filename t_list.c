@@ -10,6 +10,7 @@ static void t_arraylist_insert ();
 static void t_arraylist_reverse ();
 static void t_arraylist_create_by_arr ();
 static void t_arraylist_delete_key ();
+static void t_arraylist_merge ();
 
 static void t_linklist_insert ();
 static void t_linklist_delete ();
@@ -43,6 +44,7 @@ int main (int argc, char* argv []) {
 	t_arraylist_create_by_arr ();
 	t_arraylist_delete_key ();
 	t_arraylist_reverse ();
+	t_arraylist_merge ();
 
 	t_linklist_insert ();
 	t_linklist_create_by_arr ();
@@ -172,6 +174,102 @@ static void t_arraylist_delete_key () {
 		}
 
 		release_arraylist (list, NULL);
+	}
+}
+
+static void t_arraylist_merge () {
+	{ // 0x01
+		anytype input [] = {
+			1, 3, 5, 7, 9, 11, 13,
+			15, 17, 19,
+			2, 4, 6, 8, 10, 12, 14,
+			16, 18, 20, 22, 24, 26,
+			30
+		};
+		const int count = sizeof (input) / sizeof (anytype);
+		const int ac = 10;
+		const int bc = 14;
+		int i = 0, j = 0;
+
+		parraylist alist = create_arraylist_by_arr (input, ac);
+		parraylist blist = create_arraylist_by_arr (input + ac, bc);
+
+		assert (alist && alist -> count == ac);
+		assert (blist && blist -> count == bc);
+
+		parraylist c = merge_arraylist (alist, blist, NULL);
+		assert (c && c -> count == count);
+		
+		/* For each element. */
+		straight_insertsort (input, count, NULL);
+		for (; i < count; ++ i)
+			assert (c -> array [i] == input [i]);
+
+		release_arraylist (alist, NULL);
+		release_arraylist (blist, NULL);
+		release_arraylist (c, NULL);
+	}
+
+	{ // 0x02
+		arraylist zerolist = { NULL, 0, 0 };
+		arraylist zerolist1 = { NULL, 0, 0 };
+
+		parraylist l = merge_arraylist (NULL, NULL, NULL);
+		assert (l == NULL);
+
+		l = merge_arraylist (&zerolist, &zerolist1, NULL);
+		assert (l == NULL);
+	}
+
+	{ // 0x03
+		anytype input [] = {
+			1, 2, 3, 4, 9
+		};
+		anytype input1 [] = { 8 };
+		int count = 0, i;
+
+		count = sizeof (input) / sizeof (anytype);
+		arraylist onelist = { input1, 1, 1 };
+		parraylist list = create_arraylist_by_arr (input, count);
+		parraylist res = NULL;
+
+		assert (list && list -> count == count);
+		res = merge_arraylist (&onelist, list, NULL);
+
+		assert (res && res -> count == count + 1);
+
+		/* For each element. */
+		for (i = 0; i < 4; ++ i)
+			assert (input [i] == res -> array [i]);
+
+		assert (res -> array [i ++] == input1 [0]);
+		assert (res -> array [i ++] == input [4]);
+
+		release_arraylist (list, NULL);
+		release_arraylist (res, NULL);
+	}
+
+	{ // 0x04
+		anytype input [] = { 0x400 };
+		anytype input1 [] = { 0x800 };
+		arraylist onelist = { input, 1, 1 };
+		arraylist onelist1 = { input1, 1, 1 };
+		parraylist res = merge_arraylist (&onelist, &onelist1, NULL);
+
+		assert (res && res -> count == 2 && res -> capacity == 2);
+		assert (res -> array [0] == input [0]);
+		assert (res -> array [1] == input1 [0]);
+		
+		release_arraylist (res, NULL);
+	}
+
+	{ // 0x05
+		anytype input [] = { 0x400 };
+		arraylist onelist = { input, 1, 1 };
+		arraylist zerolist = { NULL, 0, 0 };
+		parraylist res = merge_arraylist (&onelist, &zerolist, NULL);
+
+		assert (! res);
 	}
 }
 

@@ -35,7 +35,8 @@ parraylist create_arraylist (int _initial) {
 	}
 
 	list -> array = array;
-	list -> capacity = __DEF_ARRAYLIST_LEN__;
+	// list -> capacity = __DEF_ARRAYLIST_LEN__;
+	list -> capacity = _initial;
 	list -> count = 0;
 
 	return list;
@@ -218,7 +219,6 @@ int find_arraylist (parraylist _list,
 }
 
 
-// TODO testing.
 parraylist merge_arraylist (
 		parraylist _a, parraylist _b, cmphook _cmp) {
 	int i, j, k, count;
@@ -228,7 +228,7 @@ parraylist merge_arraylist (
 	if (!_a || !_b) return NULL;
 	if (_a -> count <= 0 || _b -> count <= 0) return NULL;
 
-	if (_cmp) _cmp == __default_cmp_func;
+	if (! _cmp) _cmp = __default_cmp_func;
 
 	ac = _a -> count; bc = _b -> count;
 	count = ac + bc;
@@ -238,7 +238,7 @@ parraylist merge_arraylist (
 	if (c) {
 		i = j = k = 0;
 		anytype* carr = c -> array;
-		while (i < ac && b < bc) {
+		while (i < ac && j < bc) {
 			if (CMP_GT == _cmp (_a -> array [i], _b -> array [j]))
 				carr [k ++] = _b -> array [j ++];
 			else
@@ -247,6 +247,7 @@ parraylist merge_arraylist (
 
 		while (i < ac) carr [k ++] = _a -> array [i ++];
 		while (j < bc) carr [k ++] = _b -> array [j ++];
+		c -> count = count;
 	}
 
 	return c;
