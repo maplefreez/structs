@@ -18,7 +18,7 @@ int main (int argc, char* argv []) {
 	/* Process input. */
 	scanf ("%d", &count);
 	while (count -- > 0) {
-		scanf ("%s %s %d", tempinfo.name, tempinfo.num,
+		scanf ("%s %s %hd", tempinfo.name, tempinfo.num,
 				&tempinfo.score);
 		if (tempinfo.score > max.score)
 			max = tempinfo;
