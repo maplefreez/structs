@@ -10,6 +10,9 @@ OBJS=lstring.o btree.o bstree.o stack.o sort.o \
 
 all: $(OBJS) $(TESTS)
 
+PAT:
+	$(MAKE) -C PAT/ all
+
 test:	$(TESTS)
 
 NETM:

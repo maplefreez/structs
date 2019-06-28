@@ -1,4 +1,4 @@
-CFLAGS=-g -Wall
+CFLAGS=-g -Wall -lm
 src=$(wildcard *.c)
 target=$(patsubst %.c, %, ${src})
 CC=gcc
