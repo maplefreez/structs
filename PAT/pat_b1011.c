@@ -6,16 +6,15 @@
 
 #	define SUBMIT
 
+#	ifndef SUBMIT
 static void _test_print (long long, long long, 
 		long long, long long);
 static void _input_process ();
 
-#	ifndef SUBMIT
 int main (int argc, char* argv []) {
 	_input_process ();
 	return 0;
 }
-#endif // ~ SUBMIT
 
 
 static void _test_print (long long _a, 
@@ -38,6 +37,7 @@ static void _input_process () {
 		++ i;
 	}	
 }
+#endif // ~ SUBMIT
 
 #ifdef SUBMIT
 // Submit code.

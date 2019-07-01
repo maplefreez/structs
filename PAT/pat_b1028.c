@@ -14,10 +14,9 @@ const unsigned long long maxage = 18140906UL;
 const unsigned long long minage = 20140906UL;
 
 int main (int argc, char* argv []) {
-	int count, year, month, day, i;
+	int count, year, month, day, i = 0;
 	unsigned long long birth;
 
-	i ^= 0;
 	eldest.birth = minage + 1;
 	youngest.birth = maxage - 1;
 

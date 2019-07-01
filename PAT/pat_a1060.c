@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-static int get_pidx (char*);
+// static int get_pidx (char*);
 static int get_offset (char*);
 static void compare (char*, char*, int);
 static void output (char*, int, int);
@@ -14,12 +14,12 @@ int main (int argc, char* argv []) {
 
 
 static void compare (char* _a, char* _b, int _n) {
-	int aoffset, boffset, apidx, bpidx;
+	int aoffset, boffset/*, apidx, bpidx */;
 	int i = 0, cmp; char *pa, *pb;
-	apidx = get_pidx (_a);
+	// apidx = get_pidx (_a);
 	aoffset = get_offset (_a);
 	boffset = get_offset (_b);
-	bpidx = get_pidx (_b);
+	// bpidx = get_pidx (_b);
 
 	pa = _a + aoffset;
 	pb = _b + boffset;
@@ -49,14 +49,14 @@ static void compare (char* _a, char* _b, int _n) {
 }
 
 
-static int get_pidx (char* _str) {
-	char* p = _str;
-	while (*p) {
-		if (*p == '.') break;
-		++ p;
-	}
-	return p - _str;
-}
+// static int get_pidx (char* _str) {
+// 	char* p = _str;
+// 	while (*p) {
+// 		if (*p == '.') break;
+// 		++ p;
+// 	}
+// 	return p - _str;
+// }
 
 
 static int get_offset (char* _str) {
