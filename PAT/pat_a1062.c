@@ -1,6 +1,6 @@
-/* Date : 2019/7/18
+/* Date : 2019/8/3
  * Author : ez
- * Desc :  PAT A 1001
+ * Desc :  PAT A 1062
  */
 
 #include <stdlib.h>
@@ -19,14 +19,14 @@ static int __cmp (const void* _a, const void* _b) {
 	int sumA, sumB;
 	pstud a = (pstud)_a, b = (pstud)_b;
 	if (a -> class != b -> class) 
-		return b -> class - a -> class;
+		return a -> class - b -> class;
 	sumA = a -> D + a -> C;
 	sumB = b -> D + b -> C;
 	/* The same class. */
-	if (sumA != sumB) return (sumA - sumB);
+	if (sumA != sumB) return (sumB - sumA);
 	/* The same total scores. */
 	if (a -> D != b -> D)
-		return a -> D - b -> D;
+		return b -> D - a -> D;
 
 	return strncmp (a -> NO, b -> NO, 8);
 }
@@ -60,7 +60,7 @@ int main (int argc, char* argv []) {
 
 	printf ("%d\n", past);
 	while (i < past) {
-		printf ("%s %d %d\n", all [i].NO, all [i].D, all [i].C);
+		printf ("%d %s %d %d\n", all [i].class, all [i].NO, all [i].D, all [i].C);
 		++ i;
 	}
 
