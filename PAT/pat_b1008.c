@@ -1,6 +1,6 @@
 /* Date : 2018/12/29
  * Author : ez
- * Desc :  PAT B 1011
+ * Desc :  PAT B 1008
  */
 
 #include <stdio.h>
