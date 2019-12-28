@@ -47,7 +47,7 @@ static void _display (pfraction _a) {
 	}
 }
 
-/* TODO... Shell be submit. */
+/* TODO... Shell be submitted. */
 int main (int argc, char* argv []) {
 	int n = 0, i = 1;
 	fraction a, sum;
