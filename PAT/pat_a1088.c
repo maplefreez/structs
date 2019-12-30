@@ -1,6 +1,6 @@
-/* Date : 2019/12/26
+/* Date : 2019/12/28
  * Author : ez
- * Desc :  PAT A 1081
+ * Desc :  PAT A 1088
  */
 
 #include <stdlib.h>
