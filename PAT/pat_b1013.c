@@ -12,15 +12,15 @@ static int _prime [10004];
 static int _is_prime (int);
 static int _create_prime (int);
 
-/* Second. Shell be submitted. */
+/* The second approach. */
 int main (int argc, char* argv []) {
 	int m, n, i; int row = 0;
 	if (scanf ("%d %d", &m, &n));
 	_create_prime (n);
 	i = m - 1;
 	while (i < n) {
-		if (row <= 8) 
-			row ++, printf ("%d ", _prime [i ++]);
+		if (row <= 8 && i < n - 1) 
+			row ++, printf ("%d^", _prime [i ++]);
 		else
 			row ^= row, printf ("%d\n", _prime [i ++]); 
 	}
