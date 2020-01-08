@@ -10,7 +10,6 @@
 
 static int _is_prime (int);
 
-/* TODO... To be submitted. */
 int main (int argc, char * argv []) {
 	int n, i = 3, count = 0;
 	if (scanf ("%d", &n));
